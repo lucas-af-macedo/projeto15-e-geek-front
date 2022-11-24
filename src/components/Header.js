@@ -2,7 +2,7 @@ import { GrMenu, GrSearch } from 'react-icons/gr';
 
 import { SlUserFemale } from 'react-icons/sl';
 import { accentColor } from '../constants/colors';
-import logo from '../assets/images/logo.svg';
+import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
 
 export default function Header() {
@@ -15,7 +15,7 @@ export default function Header() {
 			</div>
 			<Search>
 				<GrSearch style={{ marginLeft: '0.5rem', position: 'absolute' }} color='#623CEA' size='1.2em' />
-				<SearchBar id='search-bar' type='text' placeholder='Search'></SearchBar>
+				<SearchBar id='search-bar' type='text' placeholder='Procurar'></SearchBar>
 			</Search>
 			<div>
 				<SlUserFemale size='1.3rem' />
@@ -33,11 +33,15 @@ const HeaderContainer = styled.div`
 	background-color: ${accentColor};
 	padding: 0 15px;
 	margin-bottom: 10px;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+	position: sticky;
+	top: 0;
+	left: 0;
 	div {
 		display: flex;
 		align-items: center;
 		h1 {
-			font-size: 30px;
+			font-size: 25px;
 			font-family: 'Bangers', cursive;
 		}
 		img {
@@ -57,8 +61,8 @@ const Search = styled.div`
 `;
 
 const SearchBar = styled.input`
-	padding: 1rem 1rem 1rem 2.5rem;
-	width: 100%;
+	padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+	width: 90%;
 	border: 1px solid #fff;
 	border-radius: 50px;
 `;
