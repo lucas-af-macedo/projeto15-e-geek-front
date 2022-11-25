@@ -37,6 +37,7 @@ const HeaderContainer = styled.div`
 	position: sticky;
 	top: 0;
 	left: 0;
+	z-index: 3;
 	div {
 		display: flex;
 		align-items: center;

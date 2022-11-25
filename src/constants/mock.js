@@ -1,7 +1,7 @@
 const mock = [
 	{
 		_id: '637e79997d0d9d7b7eeb6c2d',
-		name: 'Moletom - Harry Potter - Óculos Cicatriz Cachecol minimalista',
+		name: 'Moletom - Harry Potter - minimalista',
 		price: '115',
 		tags: ['Harry Potter', 'Moletom'],
 		mainimage:

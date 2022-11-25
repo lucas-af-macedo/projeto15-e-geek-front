@@ -2,10 +2,15 @@ import styled from 'styled-components';
 
 export default function Product({ product }) {
 	const { name, price, mainimage } = product;
+	const newName = name.split(' - ');
 
 	return (
 		<ProductBox>
-			<p>{name}</p>
+			<div>
+				{newName.map((text) => (
+					<p>{text}</p>
+				))}
+			</div>
 			<div>
 				<img src={mainimage} alt={name} />
 			</div>
@@ -30,8 +35,16 @@ const ProductBox = styled.div`
 	p {
 		overflow-y: hidden;
 	}
+	div:first-of-type {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: fit-content;
+		margin: 0 auto;
+	}
 	div {
 		width: 145px;
+
 		img {
 			width: 100%;
 			background-color: #fff;
