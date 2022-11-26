@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import Product from './Product';
 import axios from 'axios';
-import mock from '../../constants/mock.js';
 import styled from 'styled-components';
 
 export default function ProductsPage() {
@@ -16,7 +15,6 @@ export default function ProductsPage() {
 				setProducts(res.data);
 			})
 			.catch((err) => {
-				setProducts(mock);
 				console.log(err);
 			});
 	}, []);

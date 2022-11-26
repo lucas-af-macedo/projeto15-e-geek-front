@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 export default function Product({ product }) {
-	const { name, price, mainimage } = product;
+	const { name, price, mainimage, _id } = product;
+	const navigate = useNavigate();
 	const newName = name.split(' - ');
 
 	return (
-		<ProductBox>
+		<ProductBox onClick={() => navigate(`/product/${_id}`)}>
 			<div>
 				{newName.map((text) => (
 					<p>{text}</p>
@@ -31,6 +33,7 @@ const ProductBox = styled.div`
 	border-radius: 5px;
 	text-align: justify;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+	cursor: pointer;
 	/* background-color: green; */
 	p {
 		overflow-y: hidden;
