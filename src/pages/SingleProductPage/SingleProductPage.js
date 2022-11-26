@@ -1,30 +1,41 @@
 import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import Loading from '../../components/Loading.js';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import swal from 'sweetalert';
 
 export default function SingleProductPage(props) {
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const [product, setProduct] = useState({});
 	const [form, setForm] = useState({ qty: 0, price: '' });
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+		setLoading(true);
 		axios
-			.get(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`)
+			.get(`${process.env.REACT_APP_API_BASE_URL}/product/${id}`)
 			.then((res) => {
-				console.log(res.data);
-				setProduct(res.data);
+				setLoading(false);
+				if (!res.data) {
+					swal({ text: 'Desculpe, não conseguimos encontrar esse produto', icon: 'warning' });
+					navigate('/');
+				} else {
+					setProduct(res.data);
+				}
 			})
 			.catch((err) => {
 				console.log(err);
+				swal({ text: 'Desculpe, não conseguimos encontrar esse produto', icon: 'warning' });
+				navigate('/');
 			});
 	}, [id]);
 
 	function handleForm(e) {
 		let { qty } = form;
-		console.log(qty);
 
 		if (e.target.id === 'increment') {
 			qty++;
@@ -32,30 +43,35 @@ export default function SingleProductPage(props) {
 			if (qty <= 0) return;
 			qty--;
 		}
-		console.log(qty);
 		setForm({ ...form, qty });
 	}
 
 	return (
 		<SingleProductContainer>
-			<LeftDiv>
-				<h1>{product.name}</h1>
-				<img src={product.mainimage} alt={product.name} />
-			</LeftDiv>
-			<RightDiv>
-				<h2>{product.description}</h2>
-				<h2>{product?.sizes?.join(' ')}</h2>
-				<form>
-					<button id='decrement' type='button' onClick={handleForm}>
-						&mdash;
-					</button>
-					<input type='text' value={form.qty} />
-					<button id='increment' type='button' onClick={handleForm}>
-						&#xff0b;
-					</button>
-				</form>
-				<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
-			</RightDiv>
+			{loading ? (
+				<Loading />
+			) : (
+				<>
+					<LeftDiv>
+						<h1>{product.name}</h1>
+						<img src={product.mainimage} alt={product.name} />
+					</LeftDiv>
+					<RightDiv>
+						<h2>{product.description}</h2>
+						<h2>{product?.sizes?.join(' ')}</h2>
+						<form>
+							<button id='decrement' type='button' onClick={handleForm}>
+								&mdash;
+							</button>
+							<input type='text' value={form.qty} />
+							<button id='increment' type='button' onClick={handleForm}>
+								&#xff0b;
+							</button>
+						</form>
+						<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
+					</RightDiv>
+				</>
+			)}
 		</SingleProductContainer>
 	);
 }
@@ -74,8 +90,11 @@ const SingleProductContainer = styled.div`
 
 const LeftDiv = styled.div`
 	img {
-		max-width: 90vw;
+		max-width: 100%;
 		object-fit: contain;
+		@media (min-width: 660px) {
+			max-width: 30vw;
+		}
 	}
 `;
 

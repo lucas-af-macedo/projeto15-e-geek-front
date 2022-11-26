@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import Product from './Product';
+import Loading from '../../components/Loading.js';
+import Product from './Product.js';
 import axios from 'axios';
 import styled from 'styled-components';
 
 export default function ProductsPage() {
 	const [products, setProducts] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+		setLoading(true);
 		axios
 			.get(`${process.env.REACT_APP_API_BASE_URL}/products`)
 			.then((res) => {
-				console.log(res);
+				setLoading(false);
 				setProducts(res.data);
 			})
 			.catch((err) => {
@@ -22,17 +25,26 @@ export default function ProductsPage() {
 	return (
 		<ProductsContainer>
 			<h1>Produtos</h1>
-			<Products>
-				{products?.map((product) => (
-					<Product product={product} key={product._id} />
-				))}
-			</Products>
+			{loading ? (
+				<Loading size={150} />
+			) : (
+				<Products>
+					{products?.map((product) => (
+						<Product product={product} key={product._id} />
+					))}
+				</Products>
+			)}
 		</ProductsContainer>
 	);
 }
 
 const ProductsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	h1 {
+		width: 100%;
 		font-size: 30px;
 		font-weight: 600;
 	}

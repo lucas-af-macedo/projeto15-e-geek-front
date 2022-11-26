@@ -4,14 +4,16 @@ import { SlUserFemale } from 'react-icons/sl';
 import { accentColor } from '../constants/colors';
 import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
+	const navigate = useNavigate();
 	return (
 		<HeaderContainer>
 			<div>
 				<GrMenu size='1.2rem' />
-				<img src={logo} alt='Logo' />
-				<h1>E-GEEK</h1>
+				<img src={logo} alt='Logo' onClick={() => navigate('/')} />
+				<h1 onClick={() => navigate('/')}>E-GEEK</h1>
 			</div>
 			<Search>
 				<GrSearch style={{ marginLeft: '0.5rem', position: 'absolute' }} color='#623CEA' size='1.2em' />
@@ -44,11 +46,13 @@ const HeaderContainer = styled.div`
 		h1 {
 			font-size: 25px;
 			font-family: 'Bangers', cursive;
+			cursor: pointer;
 		}
 		img {
 			width: 30px;
 			height: 30px;
 			margin: 0 5px 0 15px;
+			cursor: pointer;
 		}
 	}
 `;
