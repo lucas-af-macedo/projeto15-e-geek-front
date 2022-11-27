@@ -81,11 +81,14 @@ export default function SingleProductPage(props) {
 				.get(`${process.env.REACT_APP_API_BASE_URL}/NewSession`)
 				.then((res) => {
 					setUserData(res.data);
+					const user = JSON.stringify(res.data);
+					localStorage.setItem("userE-geek", user);
 					const config = {
 						headers: {
 							authorization: `Bearer ${res.data.token}`
 						}
 					}
+
 					axios
 						.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
 						.catch((err) => {
