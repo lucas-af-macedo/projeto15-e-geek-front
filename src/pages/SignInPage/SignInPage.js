@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
@@ -14,17 +14,21 @@ export default function SignInPage() {
 		password: "",
 	});
 
-	useEffect(() => {
-		if (userData !== null) {
-			navigate("/");
-		}
-	}, [userData]);
-
 	function postLogin(event) {
 		setDisabled(true);
 		event.preventDefault();
-		const URL = `${baseURL}sign-in`;
-		const body = { ...form };
+		const URL = `${baseURL}/sign-in`;
+        let body;
+        if (userData?.token !== undefined && userData?.isLogged){
+            if(!userData?.isLogged){
+                body = { 
+                    ...form,
+                    oldToken: `Bearer ${userData.token}`
+                };
+            }else{
+                body = {...form}
+            }
+        }
 
 		const request = axios.post(URL, body);
 
