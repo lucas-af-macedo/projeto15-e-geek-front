@@ -7,12 +7,13 @@ import { useParams } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext.js';
 
 export default function SingleProductPage(props) {
-	const { userData, setUserData } = useContext(UserContext);
+	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
 	const { id } = useParams();
 	const [product, setProduct] = useState({});
 	const [form, setForm] = useState({ qty: 1, price: '' });
 
 	useEffect(() => {
+		setAfterSignInGoTo(`/product/${id}`)
 		axios
 			.get(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`)
 			.then((res) => {

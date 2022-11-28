@@ -8,6 +8,7 @@ import SignInPage from "./pages/SignInPage/SignInPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SingleProductPage from "./pages/SingleProductPage/SingleProductPage.js";
 import UserContext from "./contexts/UserContext.js";
+import CartPage from "./pages/CartPage/CartPage.js";
 
 function App() {
 	const [userData, setUserData] = useState(null);
@@ -32,6 +33,7 @@ function App() {
 					<Route path="/sign-up" element={<SignUpPage />} />
 					<Route path="/sign-in" element={<SignInPage />} />
 					<Route path="/product/:id" element={<SingleProductPage />} />
+					<Route path="/cart" element={<CartPage /> } />
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>
