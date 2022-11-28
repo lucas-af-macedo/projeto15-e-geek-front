@@ -153,10 +153,10 @@ export default function ItemCart({ item, reloadComponent, setDisableBuy }) {
 }
 
 const Container = styled.div`
-	height: 100px;
-	border-bottom: 1px solid silver;
 	display: flex;
 	align-items: center;
+	height: 100px;
+	border-bottom: 1px solid silver;
 	&:first-of-type {
 		border-top: 1px solid silver;
 	}
@@ -178,11 +178,11 @@ const BottonBox = styled.div`
 	}
 	form {
 		display: flex;
-		margin-bottom: 5px;
 		justify-content: center;
 		align-items: center;
-		width: 70px;
+		width: 80px;
 		max-width: 120px;
+		margin-bottom: 5px;
 		border-radius: 3px;
 		font-size: 18px;
 		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -201,15 +201,17 @@ const BottonBox = styled.div`
 		}
 		button {
 			width: 40%;
+			height: 100%;
 			border: 0 solid ${accentColor};
+			border-radius: 3px;
 			color: ${textBaseColor};
 			text-align: center;
 			text-shadow: 0 1px 0 rgba(#fff, 0.6);
 			cursor: pointer;
 			background: ${baseColor};
 			&:hover {
-				background: darken(${baseColor}, 10%);
 				color: darken(${textBaseColor}, 20%);
+				background: darken(${baseColor}, 10%);
 			}
 			&--left {
 				border-radius: 3px 0 0 3px;
@@ -222,11 +224,11 @@ const BottonBox = styled.div`
 `;
 
 const ImageBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 80px;
 	height: 80px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	background-color: white;
 	img {
 		height: 50px;
@@ -234,11 +236,11 @@ const ImageBox = styled.div`
 `;
 
 const Information = styled.div`
-	margin-left: 15px;
-	height: 70px;
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	width: 100%;
+	height: 70px;
+	margin-left: 15px;
 	padding-right: 20px;
 `;
