@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors.js';
 
 import ItemCart from './ItemCart.js';
+import Loading from '../../components/Loading.js';
 import UserContext from '../../contexts/UserContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -13,7 +14,10 @@ export default function CartPage() {
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
+	const [loading, setLoading] = React.useState(false);
+
 	useEffect(() => {
+		setLoading(true);
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
 		if (userData === null) {
@@ -34,6 +38,7 @@ export default function CartPage() {
 			axios
 				.get(`${process.env.REACT_APP_API_BASE_URL}/cartItens`, config)
 				.then((answer) => {
+					setLoading(false);
 					setCartItens(answer.data);
 					let totalCart = 0;
 					answer.data.forEach((element) => {
@@ -42,6 +47,7 @@ export default function CartPage() {
 					setTotal(totalCart);
 				})
 				.catch((answer) => {
+					setLoading(false);
 					console.log(answer.data);
 				});
 		}
@@ -82,7 +88,9 @@ export default function CartPage() {
 
 	return (
 		<Container>
-			{cartItens.length ? (
+			{loading ? (
+				<Loading size={150} />
+			) : cartItens.length ? (
 				<>
 					<CartBox>
 						<H1>Carrinho</H1>

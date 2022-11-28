@@ -15,6 +15,7 @@ export default function SingleProductPage(props) {
 	const [product, setProduct] = useState({});
 	const [form, setForm] = useState({ qty: 1, price: '' });
 	const [loading, setLoading] = useState(false);
+	const [disabled, setDisabled] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
@@ -72,6 +73,7 @@ export default function SingleProductPage(props) {
 	}
 
 	function addCart() {
+		setDisabled(true);
 		const body = {
 			amount: form.qty,
 			productId: product._id,
@@ -84,9 +86,21 @@ export default function SingleProductPage(props) {
 				},
 			};
 
-			axios.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config).catch((err) => {
-				console.log(err);
-			});
+			axios
+				.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
+				.then(answer=>{
+					swal("Produto adicionado ao carrinho com sucesso!", { icon: 'success' });
+					setDisabled(false);
+				})
+				.catch((err) => {
+					if(err.response.data.message==='Produto ja adicionado ao carrinho!'){
+						swal("Este produto ja está no seu carrinho!", {icon: 'error'});
+					}else{
+						swal("Houve um problema ao adicionar o produto ao carrinho!", {icon: 'error'});
+					}
+					console.log(err.response.data);
+					setDisabled(false);
+				});
 		} else {
 			axios
 				.get(`${process.env.REACT_APP_API_BASE_URL}/NewSession`)
@@ -100,9 +114,21 @@ export default function SingleProductPage(props) {
 						},
 					};
 
-					axios.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config).catch((err) => {
-						console.log(err);
-					});
+					axios
+						.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
+						.then(answer=>{
+							swal("Produto adicionado ao carrinho com sucesso!", { icon: 'sucess' });
+							setDisabled(false);
+						})
+						.catch((err) => {
+							if(err.response.data.message==='Produto ja adicionado ao carrinho!'){
+								swal("Este produto ja está no seu carrinho!", {icon: 'error'});
+							}else{
+								swal("Houve um problema ao adicionar o produto ao carrinho!", {icon: 'error'});
+							}
+							console.log(err.response.data);
+							setDisabled(false);
+						});
 				})
 				.catch((err) => {
 					console.log(err);
@@ -112,44 +138,46 @@ export default function SingleProductPage(props) {
 
 	return (
 		<FalseBody>
-			<Container>
-				<SingleProductContainer>
-					<LeftDiv>
-						<h1>{product.name}</h1>
-						<ImageBox>
-							<img src={product.mainimage} alt={product.name} />
-						</ImageBox>
-						<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
-					</LeftDiv>
-					<RightDiv size={product?.sizes?.join(' ')}>
-						<h1>{product.name}</h1>
-						<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
-						<h3>{product?.sizes?.join(' - ')}</h3>
-						<AddCartBox>
-							<h4>Quantidade:</h4>
-							<form>
-								<button id='decrement' type='button' onClick={handleForm}>
-									&mdash;
-								</button>
-								<input
-									type='number'
-									value={form.qty}
-									onChange={handleFormInput}
-									onBlur={handleFormInputLeave}
-								/>
-								<button id='increment' type='button' onClick={handleForm}>
-									&#xff0b;
-								</button>
-							</form>
-							<AddCartButton onClick={addCart}>Adicionar ao Carrinho</AddCartButton>
-						</AddCartBox>
-					</RightDiv>
-				</SingleProductContainer>
-				<DescriptionBox>
-					<h1>Descrição</h1>
-					<h2>{product.description}</h2>
-				</DescriptionBox>
-			</Container>
+			{loading ? 
+				<Loading size={150} />:
+				<Container>
+					<SingleProductContainer>
+						<LeftDiv>
+							<h1>{product.name}</h1>
+							<ImageBox>
+								<img src={product.mainimage} alt={product.name} />
+							</ImageBox>
+							<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
+						</LeftDiv>
+						<RightDiv size={product?.sizes?.join(' ')}>
+							<h1>{product.name}</h1>
+							<p>R$ {Number(product.price).toFixed(2).replace('.', ',')}</p>
+							<h3>{product?.sizes?.join(' - ')}</h3>
+							<AddCartBox>
+								<h4>Quantidade:</h4>
+								<form>
+									<button id='decrement' type='button' onClick={handleForm}>
+										&mdash;
+									</button>
+									<input
+										type='number'
+										value={form.qty}
+										onChange={handleFormInput}
+										onBlur={handleFormInputLeave}
+									/>
+									<button id='increment' type='button' onClick={handleForm}>
+										&#xff0b;
+									</button>
+								</form>
+								<AddCartButton onClick={addCart} disabled={disabled}>Adicionar ao Carrinho</AddCartButton>
+							</AddCartBox>
+						</RightDiv>
+					</SingleProductContainer>
+					<DescriptionBox>
+						<h1>Descrição</h1>
+						<h2>{product.description}</h2>
+					</DescriptionBox>
+				</Container>}
 		</FalseBody>
 	);
 }
@@ -279,8 +307,8 @@ const Container = styled.div`
 `
 
 const SingleProductContainer = styled.div`
-	//background-color: white;
-	background-color: ${baseColor};
+	background-color: white;
+	//background-color: ${baseColor};
 	width: 100vw;
 	max-width: 100vw;
 	margin: 0 auto;
