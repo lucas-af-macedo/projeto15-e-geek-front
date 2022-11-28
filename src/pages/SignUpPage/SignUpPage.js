@@ -1,4 +1,4 @@
-import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
+import { accentColor, baseColor, detailColor, textBaseColor } from '../../constants/colors.js';
 
 import { FiAlertTriangle } from 'react-icons/fi';
 import { ThreeDots } from 'react-loader-spinner';
@@ -212,6 +212,13 @@ const SignUpContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	margin: 0 25px 25px 25px;
+	h1 {
+		font-weight: 400;
+		font-size: 1.3em;
+	}
+	@media (min-width: 660px) {
+		margin: 50px 25px 25px 25px;
+	}
 `;
 
 const SignUpForm = styled.form`
@@ -283,23 +290,23 @@ const SignUpForm = styled.form`
 		cursor: pointer;
 		background-color: ${baseColor};
 		box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-			${accentColor} 0 -3px 0 inset;
+			${detailColor} 0 -3px 0 inset;
 		transition: box-shadow 0.15s, transform 0.15s;
 		will-change: box-shadow, transform;
 		/* font-family: 'JetBrains Mono', monospace; */
 		appearance: none;
 		touch-action: manipulation;
 		:focus {
-			box-shadow: ${accentColor} 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-				rgba(45, 35, 66, 0.3) 0 7px 13px -3px, ${accentColor} 0 -3px 0 inset;
+			box-shadow: ${detailColor} 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+				rgba(45, 35, 66, 0.3) 0 7px 13px -3px, ${detailColor} 0 -3px 0 inset;
 		}
 		:hover {
 			box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-				${accentColor} 0 -3px 0 inset;
+				${detailColor} 0 -3px 0 inset;
 			transform: translateY(-2px);
 		}
 		:active {
-			box-shadow: ${accentColor} 0 3px 7px inset;
+			box-shadow: ${detailColor} 0 3px 7px inset;
 			transform: translateY(2px);
 		}
 	}

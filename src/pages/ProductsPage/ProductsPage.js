@@ -100,15 +100,15 @@ export default function ProductsPage() {
 const ProductsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: center;
-	margin: 0 25px 25px;
+	align-items: center;
 	max-height: 100vh;
+	margin: 0 25px 25px;
 	h1 {
 		width: 100%;
-		font-size: 30px;
-		font-weight: 600;
 		margin-bottom: 10px;
+		font-weight: 600;
+		font-size: 30px;
 	}
 	@media (min-width: 660px) {
 		margin: 50px 25px 0 25px;
@@ -124,29 +124,27 @@ const Products = styled.ul`
 	max-height: 75vh;
 	margin: 0 auto;
 	overflow-y: auto;
-	/* background-color: red; */
-
 	@media (min-width: 660px) {
+		justify-content: flex-start;
 		height: fit-content;
 		max-height: 80vh;
-		justify-content: flex-start;
 	}
 `;
 
 const ChangePages = styled.div`
-	width: fit-content;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1rem;
-	font-weight: 500;
-	color: ${textBaseColor};
+	width: fit-content;
 	margin-top: 10px;
+	color: ${textBaseColor};
+	font-weight: 500;
+	font-size: 1rem;
 	p {
-		text-align: center;
 		height: 1.5em;
-		line-height: 1.5em;
 		margin: 0 10px;
+		line-height: 1.5em;
+		text-align: center;
 	}
 `;
 

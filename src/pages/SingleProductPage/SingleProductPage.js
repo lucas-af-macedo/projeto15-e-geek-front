@@ -77,11 +77,11 @@ export default function SingleProductPage(props) {
 }
 
 const SingleProductContainer = styled.div`
+	display: flex;
+	flex-direction: column;
 	width: fit-content;
 	max-width: 100vw;
 	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
 	color: ${textBaseColor};
 	@media (min-width: 660px) {
 		flex-direction: row;
@@ -92,7 +92,9 @@ const LeftDiv = styled.div`
 	img {
 		max-width: 100%;
 		object-fit: contain;
-		@media (min-width: 660px) {
+	}
+	@media (min-width: 660px) {
+		img {
 			max-width: 30vw;
 		}
 	}
@@ -101,7 +103,6 @@ const LeftDiv = styled.div`
 const RightDiv = styled.div`
 	display: flex;
 	flex-direction: column;
-
 	form {
 		display: flex;
 		justify-content: center;
@@ -127,8 +128,8 @@ const RightDiv = styled.div`
 			cursor: pointer;
 			background: ${baseColor};
 			&:hover {
-				background: darken(${baseColor}, 10%);
 				color: darken(${textBaseColor}, 20%);
+				background: darken(${baseColor}, 10%);
 			}
 			&--left {
 				border-radius: 3px 0 0 3px;
