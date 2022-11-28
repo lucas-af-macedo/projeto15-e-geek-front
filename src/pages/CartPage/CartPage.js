@@ -13,7 +13,6 @@ export default function CartPage() {
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
-
 	useEffect(() => {
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
@@ -122,7 +121,7 @@ export default function CartPage() {
 }
 
 const H1 = styled.h1`
-	font-size: 22px;
+	font-size: 1.5em;
 	width: calc(100% - 50px);
 	margin-bottom: 25px;
 `;

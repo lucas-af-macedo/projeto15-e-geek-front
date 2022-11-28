@@ -25,7 +25,7 @@ export default function CheckoutPage() {
 			}
 		}
 
-		if (!userSend?.isLogged || userSend?.isLogged == undefined) {
+		if (!userSend?.isLogged || userSend?.isLogged === undefined) {
 			navigate('/');
 		}
 
@@ -50,7 +50,7 @@ export default function CheckoutPage() {
 					console.log(answer.data);
 				});
 		}
-	}, []);
+	}, [navigate]);
 
 	function goToCheckout() {
 		navigate('/checkout');
@@ -78,7 +78,7 @@ export default function CheckoutPage() {
 }
 
 const H1 = styled.h1`
-	font-size: 22px;
+	font-size: 1.5em;
 	width: calc(100% - 50px);
 	margin-bottom: 25px;
 `;
