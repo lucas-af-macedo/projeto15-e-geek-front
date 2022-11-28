@@ -5,11 +5,13 @@ import { GrSearch } from 'react-icons/gr';
 import SearchContext from '../contexts/SearchContext.js';
 import SideMenuComponent from './SideMenuComponent';
 import { SlUserFemale } from 'react-icons/sl';
+import UserContext from '../contexts/UserContext';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
 	const navigate = useNavigate();
+	const { userData } = useContext(UserContext);
 	const { searchInfo, setSearchInfo } = useContext(SearchContext);
 	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
@@ -47,12 +49,18 @@ export default function Header() {
 				</form>
 			</Search>
 			<UserMenuBox>
-				<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
-				<UserMenu display={userMenu}>
+				{userData?.image?.length !== 0 ? (
+					<>
+						<img src={userData.image} alt='User' onClick={() => setUserMenu(!userMenu)} />
+					</>
+				) : (
+					<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
+				)}
+				<UserMenu display={userMenu} hide={!userData?.isLogged}>
 					<li onClick={() => navigate('/sign-in')}>LogIn</li>
 					<li onClick={() => navigate('/sign-up')}>Cadastro</li>
 					<li onClick={() => navigate('/cart')}>Carrinho</li>
-					<li onClick={() => navigate('/purchases')}>Histórico</li>
+					<li onClick={() => navigate('/history')}>Histórico</li>
 				</UserMenu>
 			</UserMenuBox>
 		</HeaderContainer>
@@ -103,10 +111,18 @@ const UserMenuBox = styled.div`
 	position: relative;
 	justify-content: center;
 	align-items: center;
-	width: 2rem;
-	height: 2rem;
+	width: 3rem;
+	height: 3rem;
 	border: 1px solid ${textAccentColor};
 	border-radius: 50%;
+	img {
+		width: 3.5rem;
+		height: 3.5rem;
+		border: 2px solid ${textAccentColor};
+		border-radius: 50%;
+		cursor: pointer;
+		object-fit: contain;
+	}
 `;
 const UserIcon = styled(SlUserFemale)`
 	cursor: pointer;
@@ -114,7 +130,7 @@ const UserIcon = styled(SlUserFemale)`
 const UserMenu = styled.ul`
 	display: ${(props) => (props.display ? 'initial' : 'none')};
 	position: absolute;
-	top: 2.4rem;
+	top: 3.5rem;
 	right: 0;
 	width: fit-content;
 	max-width: 30vw;
@@ -123,6 +139,7 @@ const UserMenu = styled.ul`
 	font-weight: 600px;
 	font-size: 0.9em;
 	background-color: ${detailColor};
+	border: 1px solid ${textAccentColor};
 	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 	li {
 		display: flex;
@@ -135,6 +152,10 @@ const UserMenu = styled.ul`
 		cursor: pointer;
 		:last-of-type {
 			border: none;
+		}
+		:nth-child(1),
+		:nth-child(2) {
+			display: ${(props) => (props.hide ? 'inherit' : 'none')};
 		}
 	}
 `;
