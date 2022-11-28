@@ -1,16 +1,31 @@
 import { accentColor, detailColor, textAccentColor } from '../constants/colors';
+import { useContext, useState } from 'react';
 
 import { GrSearch } from 'react-icons/gr';
+import SearchContext from '../contexts/SearchContext.js';
 import SideMenuComponent from './SideMenuComponent';
 import { SlUserFemale } from 'react-icons/sl';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function Header() {
 	const navigate = useNavigate();
-
+	const { searchInfo, setSearchInfo } = useContext(SearchContext);
+	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
+
+	function searchGo(e) {
+		e.preventDefault();
+		const search = searchInput.toLowerCase().split(' ');
+
+		setSearchInfo({ ...searchInfo, tags: search });
+		setSearchInput('');
+		navigate('/search');
+	}
+
+	function handleSearch(e) {
+		setSearchInput(e.target.value);
+	}
 
 	return (
 		<HeaderContainer>
@@ -21,7 +36,15 @@ export default function Header() {
 					color={detailColor}
 					size='1.2em'
 				/>
-				<SearchBar id='search-bar' type='text' placeholder='Procurar'></SearchBar>
+				<form onSubmit={searchGo}>
+					<SearchBar
+						id='search-bar'
+						type='text'
+						placeholder='Procurar'
+						value={searchInput}
+						onChange={handleSearch}
+					/>
+				</form>
 			</Search>
 			<UserMenuBox>
 				<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
@@ -59,6 +82,9 @@ const Search = styled.div`
 	align-items: center;
 	width: 50%;
 	padding: 0.5rem;
+	form {
+		width: 100%;
+	}
 `;
 
 const SearchBar = styled.input`
