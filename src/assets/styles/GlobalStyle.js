@@ -33,9 +33,9 @@ time, mark, audio, video {
 		background: ${baseColor};
 	}
 	::-webkit-scrollbar-thumb {
-		background: ${accentColor};
-		border-radius: 5px;
 		max-height: 50%;
+		border-radius: 5px;
+		background: ${accentColor};
 		:hover {
 			background: ${detailColor};
 		}

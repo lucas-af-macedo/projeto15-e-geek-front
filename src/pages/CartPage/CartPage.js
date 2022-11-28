@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { baseColor, detailColor, textBaseColor } from '../../constants/colors';
+import { baseColor, detailColor, textBaseColor } from '../../constants/colors.js';
 
-import ItemCart from './ItemCart';
-import UserContext from '../../contexts/UserContext';
+import ItemCart from './ItemCart.js';
+import UserContext from '../../contexts/UserContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';

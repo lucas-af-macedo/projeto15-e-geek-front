@@ -1,13 +1,14 @@
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
-import { accentColor, textBaseColor } from '../../constants/colors.js';
-import { useEffect, useState } from 'react';
+import { accentColor, detailColor } from '../../constants/colors.js';
+import { useContext, useEffect, useState } from 'react';
 
 import Loading from '../../components/Loading.js';
-import Product from '../../components/Product.js';
+import SearchContext from '../../contexts/SearchContext.js';
+import SearchMain from './SearchMain.js';
 import axios from 'axios';
 import styled from 'styled-components';
 
 export default function SearchPage() {
+	const { searchInfo } = useContext(SearchContext);
 	const [products, setProducts] = useState([]);
 	const [changePage, setChangePage] = useState({ page: '1', limit: '20' });
 	const [lastPage, setLastPage] = useState(false);
@@ -17,7 +18,9 @@ export default function SearchPage() {
 		setLoading(true);
 		axios
 			.get(
-				`${process.env.REACT_APP_API_BASE_URL}/products?page=${changePage.page}&limit=${changePage.limit}`
+				`${process.env.REACT_APP_API_BASE_URL}/search?page=${changePage.page}&limit=${changePage.limit}${
+					searchInfo.tags.length === 0 ? '' : `&tags=${searchInfo.tags}`
+				}`
 			)
 			.then((res) => {
 				setLoading(false);
@@ -26,7 +29,7 @@ export default function SearchPage() {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [changePage]);
+	}, [changePage, searchInfo.tags]);
 
 	useEffect(() => {
 		if (products.length < changePage.limit && products.length !== 0) {
@@ -57,6 +60,7 @@ export default function SearchPage() {
 		console.log(newLimit);
 		setChangePage({ ...changePage, limit: newLimit });
 	}
+
 	return (
 		<SearchContainer>
 			<SearchHeader>
@@ -72,32 +76,13 @@ export default function SearchPage() {
 					</select>
 				</div>
 			</SearchHeader>
+			<SearchDescription>
+				Procurando por: <p>{searchInfo.tags.join(' ')}</p>
+			</SearchDescription>
 			{loading ? (
 				<Loading size={150} />
 			) : (
-				<>
-					<Products>
-						{products?.map((product) => (
-							<Product product={product} key={product._id} />
-						))}
-					</Products>
-
-					<ChangePages>
-						<PreviousPage
-							size='1.5em'
-							color={accentColor}
-							id='descrease'
-							onClick={() => handlePage('previous')}
-						/>
-						<p>Página {changePage.page}</p>
-						<NextPage
-							size='1.5em'
-							color={accentColor}
-							id='increase'
-							onClick={() => handlePage('next')}
-						/>
-					</ChangePages>
-				</>
+				<SearchMain products={products} handlePage={handlePage} changePage={changePage} />
 			)}
 		</SearchContainer>
 	);
@@ -110,6 +95,14 @@ const SearchContainer = styled.div`
 	align-items: center;
 	max-height: 100vh;
 	margin: 0 25px 25px;
+	span {
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 70vh;
+		color: ${accentColor};
+	}
 	@media (min-width: 660px) {
 		margin: 50px 25px 0 25px;
 	}
@@ -117,6 +110,7 @@ const SearchContainer = styled.div`
 const SearchHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	width: 100%;
 	margin-bottom: 10px;
 	h1 {
@@ -130,43 +124,14 @@ const SearchHeader = styled.div`
 	}
 `;
 
-const Products = styled.ul`
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	width: fit-content;
-	height: fit-content;
-	max-height: 75vh;
-	margin: 0 auto;
-	overflow-y: auto;
-	@media (min-width: 660px) {
-		justify-content: flex-start;
-		height: fit-content;
-		max-height: 80vh;
-	}
-`;
-
-const ChangePages = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: fit-content;
-	margin-top: 10px;
-	color: ${textBaseColor};
-	font-weight: 500;
-	font-size: 1rem;
+const SearchDescription = styled.div`
+	display: inline-flex;
+	width: 100%;
+	color: ${detailColor};
+	font-weight: 300;
+	font-size: 1em;
 	p {
-		height: 1.5em;
-		margin: 0 10px;
-		line-height: 1.5em;
-		text-align: center;
+		margin-left: 0.5em;
+		text-transform: capitalize;
 	}
-`;
-
-const PreviousPage = styled(FaArrowAltCircleLeft)`
-	cursor: pointer;
-`;
-
-const NextPage = styled(FaArrowAltCircleRight)`
-	cursor: pointer;
 `;

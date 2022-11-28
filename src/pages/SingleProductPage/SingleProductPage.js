@@ -206,11 +206,11 @@ const AddCartBox = styled.div`
 	}
 	form {
 		display: flex;
-		margin-bottom: 5px;
 		justify-content: center;
 		align-items: center;
 		width: 80px;
 		max-width: 120px;
+		margin-bottom: 5px;
 		border-radius: 3px;
 		font-size: 18px;
 		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -229,6 +229,7 @@ const AddCartBox = styled.div`
 		}
 		button {
 			width: 40%;
+			height: 100%;
 			border: 0 solid ${accentColor};
 			color: ${textBaseColor};
 			text-align: center;
@@ -250,49 +251,48 @@ const AddCartBox = styled.div`
 `;
 
 const FalseBody = styled.div`
-	margin-top: -10px;
 	width: 100vw;
-	min-height: calc(100vh - 80px);
 	height: 100%;
+	min-height: calc(100vh - 80px);
+	margin-top: -10px;
 `;
 
 const Container = styled.div`
-	background-color: ${baseColor};
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	width: calc(100vw - 35px);
 	max-width: 100vw;
 	margin: 0 auto;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	background-color: ${baseColor};
 `;
 
 const SingleProductContainer = styled.div`
-	background-color: ${baseColor};
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	width: calc(100vw - 35px);
 	max-width: 100vw;
 	margin: 0 auto;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-
+	background-color: ${baseColor};
 	@media (min-width: 660px) {
 		flex-direction: row;
 	}
 `;
 
 const LeftDiv = styled.div`
-	margin-top: 15px;
-	font-size: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-top: 15px;
+	font-size: 20px;
 	h1 {
 		width: 100%;
 	}
 	p {
 		width: 100%;
-		margin-bottom: 30px;
 		margin-top: 15px;
+		margin-bottom: 30px;
 	}
 	@media (min-width: 660px) {
 		p {
@@ -305,12 +305,12 @@ const LeftDiv = styled.div`
 `;
 
 const ImageBox = styled.div`
-	width: 100%;
 	display: flex;
-	min-height: 250px;
 	justify-content: center;
-	//box-shadow: inset 0 -8px 3px -8px gray;
+	width: 100%;
+	min-height: 250px;
 	padding-bottom: 3px;
+	//box-shadow: inset 0 -8px 3px -8px gray;
 	img {
 		width: 90vw;
 		max-width: 450px;
@@ -338,34 +338,34 @@ const RightDiv = styled.div`
 		display: ${(props) => (props.size === 'N/A' ? 'none' : 'block')};
 	}
 	@media (min-width: 660px) {
-		margin-left: 20px;
-		margin-top: 25px;
 		width: 270px;
+		margin-top: 25px;
 		margin-bottom: 10px;
+		margin-left: 20px;
 		p {
-			font-size: 25px;
-			margin-top: 40px;
 			display: block;
+			margin-top: 40px;
+			font-size: 25px;
 		}
 		h1 {
-			font-size: 20px;
 			display: block;
 			margin-bottom: 15px;
+			font-size: 20px;
 		}
 	}
 `;
 
 const DescriptionBox = styled.div`
-	margin-top: 30px;
-	max-width: 660px;
 	width: 100%;
+	max-width: 660px;
+	margin-top: 30px;
 	h1 {
-		font-size: 20px;
 		width: 100%;
+		font-size: 20px;
 	}
 	h2 {
+		width: 100%;
 		margin-top: 8px;
 		margin-left: 5px;
-		width: 100%;
 	}
 `;

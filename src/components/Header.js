@@ -1,16 +1,31 @@
 import { accentColor, detailColor, textAccentColor } from '../constants/colors';
+import { useContext, useState } from 'react';
 
 import { GrSearch } from 'react-icons/gr';
+import SearchContext from '../contexts/SearchContext.js';
 import SideMenuComponent from './SideMenuComponent';
 import { SlUserFemale } from 'react-icons/sl';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function Header() {
 	const navigate = useNavigate();
-
+	const { searchInfo, setSearchInfo } = useContext(SearchContext);
+	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
+
+	function searchGo(e) {
+		e.preventDefault();
+		const search = searchInput.toLowerCase().split(' ');
+
+		setSearchInfo({ ...searchInfo, tags: search });
+		setSearchInput('');
+		navigate('/search');
+	}
+
+	function handleSearch(e) {
+		setSearchInput(e.target.value);
+	}
 
 	return (
 		<HeaderContainer>
@@ -21,7 +36,15 @@ export default function Header() {
 					color={detailColor}
 					size='1.2em'
 				/>
-				<SearchBar id='search-bar' type='text' placeholder='Procurar'></SearchBar>
+				<form onSubmit={searchGo}>
+					<SearchBar
+						id='search-bar'
+						type='text'
+						placeholder='Procurar'
+						value={searchInput}
+						onChange={handleSearch}
+					/>
+				</form>
 			</Search>
 			<UserMenuBox>
 				<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
@@ -38,32 +61,35 @@ export default function Header() {
 
 const HeaderContainer = styled.div`
 	display: flex;
-	justify-content: space-between; //horizontal
-	align-items: center; //vertical
-	height: 80px;
-	width: 100%;
-	background-color: ${accentColor};
-	padding: 0 15px;
-	margin-bottom: 10px;
-	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+	z-index: 3;
 	position: sticky;
 	top: 0;
 	left: 0;
-	z-index: 3;
+	justify-content: space-between; //horizontal
+	align-items: center; //vertical
+	width: 100%;
+	height: 80px;
+	margin-bottom: 10px;
+	padding: 0 15px;
 	color: ${textAccentColor};
+	background-color: ${accentColor};
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 `;
 
 const Search = styled.div`
-	padding: 0.5rem;
-	position: relative;
 	display: flex;
+	position: relative;
 	align-items: center;
 	width: 50%;
+	padding: 0.5rem;
+	form {
+		width: 100%;
+	}
 `;
 
 const SearchBar = styled.input`
-	padding: 0.8rem 0.8rem 0.8rem 2.5rem;
 	width: 90%;
+	padding: 0.8rem 0.8rem 0.8rem 2.5rem;
 	border: 1px solid #fff;
 	border-radius: 50px;
 	:active,
@@ -74,13 +100,13 @@ const SearchBar = styled.input`
 
 const UserMenuBox = styled.div`
 	display: flex;
-	align-items: center;
-	justify-content: center;
 	position: relative;
-	border-radius: 50%;
-	border: 1px solid ${textAccentColor};
+	justify-content: center;
+	align-items: center;
 	width: 2rem;
 	height: 2rem;
+	border: 1px solid ${textAccentColor};
+	border-radius: 50%;
 `;
 const UserIcon = styled(SlUserFemale)`
 	cursor: pointer;
@@ -88,25 +114,25 @@ const UserIcon = styled(SlUserFemale)`
 const UserMenu = styled.ul`
 	display: ${(props) => (props.display ? 'initial' : 'none')};
 	position: absolute;
-	background-color: ${detailColor};
+	top: 2.4rem;
+	right: 0;
 	width: fit-content;
 	max-width: 30vw;
 	height: fit-content;
-	font-size: 0.9em;
-	font-weight: 600px;
-	top: 2.4rem;
-	right: 0;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 	border-radius: 5px;
+	font-weight: 600px;
+	font-size: 0.9em;
+	background-color: ${detailColor};
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 	li {
 		display: flex;
 		align-items: center;
-		border-bottom: 1px solid ${textAccentColor};
-		padding: 10px 0;
 		margin: 0 10px;
-		cursor: pointer;
-		text-transform: uppercase;
+		padding: 10px 0;
+		border-bottom: 1px solid ${textAccentColor};
 		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
 		:last-of-type {
 			border: none;
 		}
