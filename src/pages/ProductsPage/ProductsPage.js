@@ -1,5 +1,5 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
-import { accentColor, textBaseColor } from '../../constants/colors.js';
+import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
 import { useEffect, useState } from 'react';
 
 import Loading from '../../components/Loading.js';
@@ -31,7 +31,7 @@ export default function ProductsPage() {
 
 	// handleLastPage
 	useEffect(() => {
-		if (products.length < 20 && products.length !== 0) {
+		if (products.length < changePage.limit && products.length !== 0) {
 			setLastPage(true);
 		} else {
 			setLastPage(false);
@@ -58,7 +58,7 @@ export default function ProductsPage() {
 		'length   :',
 		products.length,
 		'\nlimit   :',
-		Number(changePage.limit) - 1,
+		Number(changePage.limit),
 		'\nlastPage   :',
 		lastPage
 	);
@@ -75,6 +75,7 @@ export default function ProductsPage() {
 							<Product product={product} key={product._id} />
 						))}
 					</Products>
+
 					<ChangePages>
 						<PreviousPage
 							size='1.5em'
@@ -82,7 +83,7 @@ export default function ProductsPage() {
 							id='descrease'
 							onClick={() => handlePage('previous')}
 						/>
-						<p>{changePage.page}</p>
+						<p>Página {changePage.page}</p>
 						<NextPage
 							size='1.5em'
 							color={accentColor}
@@ -102,11 +103,15 @@ const ProductsContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin: 0 25px 25px;
+	max-height: 100vh;
 	h1 {
 		width: 100%;
 		font-size: 30px;
 		font-weight: 600;
 		margin-bottom: 10px;
+	}
+	@media (min-width: 660px) {
+		margin: 50px 25px 0 25px;
 	}
 `;
 
@@ -115,9 +120,17 @@ const Products = styled.ul`
 	flex-wrap: wrap;
 	justify-content: space-around;
 	width: fit-content;
-	height: 50%;
+	height: fit-content;
+	max-height: 75vh;
 	margin: 0 auto;
+	overflow-y: auto;
 	/* background-color: red; */
+
+	@media (min-width: 660px) {
+		height: fit-content;
+		max-height: 80vh;
+		justify-content: flex-start;
+	}
 `;
 
 const ChangePages = styled.div`
@@ -126,14 +139,14 @@ const ChangePages = styled.div`
 	justify-content: center;
 	align-items: center;
 	font-size: 1rem;
-	font-weight: 600;
+	font-weight: 500;
 	color: ${textBaseColor};
 	margin-top: 10px;
 	p {
 		text-align: center;
-		width: 1.5em;
 		height: 1.5em;
 		line-height: 1.5em;
+		margin: 0 10px;
 	}
 `;
 

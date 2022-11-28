@@ -32,7 +32,7 @@ export default function SingleProductPage(props) {
 				swal({ text: 'Desculpe, não conseguimos encontrar esse produto', icon: 'warning' });
 				navigate('/');
 			});
-	}, [id]);
+	}, [id, navigate]);
 
 	function handleForm(e) {
 		let { qty } = form;
@@ -82,7 +82,7 @@ const SingleProductContainer = styled.div`
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-
+	color: ${textBaseColor};
 	@media (min-width: 660px) {
 		flex-direction: row;
 	}
