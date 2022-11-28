@@ -13,6 +13,7 @@ export default function SignUpPage() {
 	const [user, setUser] = useState({
 		name: '',
 		email: '',
+		image: '',
 		password: '',
 		confirmPass: '',
 		cpf: '',
@@ -35,6 +36,7 @@ export default function SignUpPage() {
 		}
 		const body = { ...user };
 		delete body.confirmPass;
+		console.log(body);
 		axios
 			.post(`${process.env.REACT_APP_API_BASE_URL}/sign-up`, body)
 			.then((res) => {
@@ -49,7 +51,7 @@ export default function SignUpPage() {
 	}
 
 	function handleError(error) {
-		switch (error.status) {
+		switch (error?.status) {
 			case 401:
 				swal(`${error.status} ${error.statusText}`, 'Já existe um usuário cadastrado com esse e-mail!', {
 					icon: 'error',
@@ -59,7 +61,6 @@ export default function SignUpPage() {
 				console.log(error);
 				let text = [];
 				for (const e of error.data.errors) {
-					console.log(e);
 					switch (e.label) {
 						case 'Name':
 							if (!text.includes('Nome: ')) {
@@ -85,6 +86,12 @@ export default function SignUpPage() {
 							if (!text.includes('Endereço: ')) {
 								text.push('Endereço: ');
 								text.push('insira um endereço válido! \n\n');
+							}
+							break;
+						case 'Image':
+							if (!text.includes('Imagem: ')) {
+								text.push('Imagem: ');
+								text.push('insira uma URL válida para  a imagem! \n\n');
 							}
 							break;
 						default:
@@ -113,7 +120,7 @@ export default function SignUpPage() {
 			setUser({ ...user, [e.target.id]: e.target.value });
 		}
 	}
-	console.log(registering);
+
 	return (
 		<SignUpContainer>
 			<h1>Cadastro</h1>
@@ -140,6 +147,15 @@ export default function SignUpPage() {
 					value={user.email}
 					onChange={handleForm}
 					required
+				/>
+				<label htmlFor='image'>URL Imagem (opicional)</label>
+				<input
+					id='image'
+					type='url'
+					placeholder='URL imagem de perfil'
+					disabled={registering ? 'disabled' : ''}
+					value={user.image}
+					onChange={handleForm}
 				/>
 				<label htmlFor='password'>Senha</label>
 				<input

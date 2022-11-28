@@ -13,6 +13,7 @@ export default function SearchPage() {
 	const [changePage, setChangePage] = useState({ page: '1', limit: '20' });
 	const [lastPage, setLastPage] = useState(false);
 	const [loading, setLoading] = useState(false);
+	console.log(searchInfo);
 
 	useEffect(() => {
 		setLoading(true);

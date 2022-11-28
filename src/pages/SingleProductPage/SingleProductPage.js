@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Loading from '../../components/Loading.js';
+import SearchContext from '../../contexts/SearchContext.js';
 import UserContext from '../../contexts/UserContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import swal from 'sweetalert';
 export default function SingleProductPage(props) {
 	const navigate = useNavigate();
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const { id } = useParams();
 	const [product, setProduct] = useState({});
 	const [form, setForm] = useState({ qty: 1, price: '' });
@@ -18,6 +20,8 @@ export default function SingleProductPage(props) {
 	const [disabled, setDisabled] = useState(false);
 
 	useEffect(() => {
+		setSearchInfo({ tags: [] });
+
 		setLoading(true);
 		setAfterSignInGoTo(`/product/${id}`);
 		axios
@@ -88,15 +92,15 @@ export default function SingleProductPage(props) {
 
 			axios
 				.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
-				.then(answer=>{
-					swal("Produto adicionado ao carrinho com sucesso!", { icon: 'success' });
+				.then((answer) => {
+					swal('Produto adicionado ao carrinho com sucesso!', { icon: 'success' });
 					setDisabled(false);
 				})
 				.catch((err) => {
-					if(err.response.data.message==='Produto ja adicionado ao carrinho!'){
-						swal("Este produto ja está no seu carrinho!", {icon: 'error'});
-					}else{
-						swal("Houve um problema ao adicionar o produto ao carrinho!", {icon: 'error'});
+					if (err.response.data.message === 'Produto ja adicionado ao carrinho!') {
+						swal('Este produto ja está no seu carrinho!', { icon: 'error' });
+					} else {
+						swal('Houve um problema ao adicionar o produto ao carrinho!', { icon: 'error' });
 					}
 					console.log(err.response.data);
 					setDisabled(false);
@@ -117,14 +121,14 @@ export default function SingleProductPage(props) {
 					axios
 						.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
 						.then(answer=>{
-							swal("Produto adicionado ao carrinho com sucesso!", { icon: 'success' });
+					    swal("Produto adicionado ao carrinho com sucesso!", { icon: 'success' });
 							setDisabled(false);
 						})
 						.catch((err) => {
-							if(err.response.data.message==='Produto ja adicionado ao carrinho!'){
-								swal("Este produto ja está no seu carrinho!", {icon: 'error'});
-							}else{
-								swal("Houve um problema ao adicionar o produto ao carrinho!", {icon: 'error'});
+							if (err.response.data.message === 'Produto ja adicionado ao carrinho!') {
+								swal('Este produto ja está no seu carrinho!', { icon: 'error' });
+							} else {
+								swal('Houve um problema ao adicionar o produto ao carrinho!', { icon: 'error' });
 							}
 							console.log(err.response.data);
 							setDisabled(false);
@@ -138,8 +142,9 @@ export default function SingleProductPage(props) {
 
 	return (
 		<FalseBody>
-			{loading ? 
-				<Loading size={150} />:
+			{loading ? (
+				<Loading size={150} />
+			) : (
 				<Container>
 					<SingleProductContainer>
 						<LeftDiv>
@@ -169,7 +174,9 @@ export default function SingleProductPage(props) {
 										&#xff0b;
 									</button>
 								</form>
-								<AddCartButton onClick={addCart} disabled={disabled}>Adicionar ao Carrinho</AddCartButton>
+								<AddCartButton onClick={addCart} disabled={disabled}>
+									Adicionar ao Carrinho
+								</AddCartButton>
 							</AddCartBox>
 						</RightDiv>
 					</SingleProductContainer>
@@ -177,7 +184,8 @@ export default function SingleProductPage(props) {
 						<h1>Descrição</h1>
 						<h2>{product.description}</h2>
 					</DescriptionBox>
-				</Container>}
+				</Container>
+			)}
 		</FalseBody>
 	);
 }
@@ -255,11 +263,10 @@ const AddCartBox = styled.div`
 				margin: 0;
 			}
 		}
-		input[type=number]::-webkit-inner-spin-button { 
+		input[type='number']::-webkit-inner-spin-button {
 			-webkit-appearance: none;
-			
 		}
-		input[type=number] { 
+		input[type='number'] {
 			-moz-appearance: textfield;
 			appearance: textfield;
 		}
@@ -304,7 +311,7 @@ const Container = styled.div`
 	@media (min-width: 660px) {
 		width: calc(100vw - 35px);
 	}
-`
+`;
 
 const SingleProductContainer = styled.div`
 	background-color: white;
@@ -377,7 +384,6 @@ const ImageBox = styled.div`
 `;
 
 const RightDiv = styled.div`
-	
 	padding-left: 15px;
 	padding-right: 15px;
 	display: flex;
@@ -425,7 +431,7 @@ const DescriptionBox = styled.div`
 	border-radius: 5px;
 	padding-top: 10px;
 	padding-bottom: 15px;
-	h1{
+	h1 {
 		font-size: 20px;
 		width: 100%;
 		font-size: 20px;
@@ -441,4 +447,4 @@ const DescriptionBox = styled.div`
 	@media (min-width: 660px) {
 		max-width: 730px;
 	}
-`
+`;

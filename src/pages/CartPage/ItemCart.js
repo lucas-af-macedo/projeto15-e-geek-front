@@ -127,7 +127,7 @@ export default function ItemCart({ item, reloadComponent, setDisableBuy }) {
 			<Information>
 				<TopBox>
 					<h1>{item.name}</h1>
-					<ion-icon name='trash-outline' onClick={deleteItem}></ion-icon>
+					<ion-icon name='trash-outline' onClick={deleteItem} />
 				</TopBox>
 				<BottonBox>
 					<form>
@@ -167,6 +167,9 @@ const TopBox = styled.div`
 	justify-content: space-between;
 	h1 {
 		font-size: 14px;
+	}
+	ion-icon {
+		cursor: pointer;
 	}
 `;
 

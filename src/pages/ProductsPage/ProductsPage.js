@@ -1,13 +1,15 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { accentColor, textBaseColor } from '../../constants/colors.js';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Loading from '../../components/Loading.js';
 import Product from '../../components/Product.js';
+import SearchContext from '../../contexts/SearchContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
 
 export default function ProductsPage() {
+	const { setSearchInfo } = useContext(SearchContext);
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [changePage, setChangePage] = useState({ page: '1', limit: '20' });
@@ -15,6 +17,7 @@ export default function ProductsPage() {
 
 	// handleProducts
 	useEffect(() => {
+		setSearchInfo({ tags: [] });
 		setLoading(true);
 		axios
 			.get(

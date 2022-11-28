@@ -2,22 +2,25 @@ import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors.js';
 
 import ItemCart from './ItemCart.js';
+import Loading from '../../components/Loading.js';
+import SearchContext from '../../contexts/SearchContext.js';
 import UserContext from '../../contexts/UserContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../components/Loading.js';
 
 export default function CartPage() {
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const [cartItens, setCartItens] = React.useState([]);
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 
 	useEffect(() => {
-        setLoading(true)
+		setSearchInfo({ tags: [] });
+		setLoading(true);
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
 		if (userData === null) {
@@ -38,7 +41,7 @@ export default function CartPage() {
 			axios
 				.get(`${process.env.REACT_APP_API_BASE_URL}/cartItens`, config)
 				.then((answer) => {
-                    setLoading(false)
+					setLoading(false);
 					setCartItens(answer.data);
 					let totalCart = 0;
 					answer.data.forEach((element) => {
@@ -47,9 +50,11 @@ export default function CartPage() {
 					setTotal(totalCart);
 				})
 				.catch((answer) => {
-                    setLoading(false)
+					setLoading(false);
 					console.log(answer.data);
 				});
+		} else {
+			setLoading(false);
 		}
 	}, []);
 
@@ -88,49 +93,48 @@ export default function CartPage() {
 
 	return (
 		<Container>
-            {loading?
-                <Loading size={150} />:
-                cartItens.length ? (
-                    <>
-                        <CartBox>
-                            <H1>Carrinho</H1>
-                                {cartItens.map((element) => (
-                                    <ItemCart
-                                        key={element._id}
-                                        item={element}
-                                        reloadComponent={reloadComponent}
-                                        setDisableBuy={setDisableBuy}
-                                    />
-                                ))}
-                            <TotalBox>
-                                <h1>Total:</h1>
-                                <h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
-                            </TotalBox>
-                        </CartBox>
-                        <CloseCart>
-                            {userData?.isLogged ? (
-                                <button onClick={goToCheckout} disabled={disableBuy}>
-                                    Comprar
-                                </button>
-                            ) : (
-                                <button onClick={goToSignIn} disabled={disableBuy}>
-                                    Fazer Login
-                                </button>
-                            )}
-                        </CloseCart>
-                    </>
-                ) : (
-                    <Nothing>
-                        <h1>O seu carrinho esta vazio</h1>
-                    </Nothing>
-                )
-            }
+			{loading ? (
+				<Loading size={150} />
+			) : cartItens.length ? (
+				<>
+					<CartBox>
+						<H1>Carrinho</H1>
+						{cartItens.map((element) => (
+							<ItemCart
+								key={element._id}
+								item={element}
+								reloadComponent={reloadComponent}
+								setDisableBuy={setDisableBuy}
+							/>
+						))}
+						<TotalBox>
+							<h1>Total:</h1>
+							<h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
+						</TotalBox>
+					</CartBox>
+					<CloseCart>
+						{userData?.isLogged ? (
+							<button onClick={goToCheckout} disabled={disableBuy}>
+								Comprar
+							</button>
+						) : (
+							<button onClick={goToSignIn} disabled={disableBuy}>
+								Fazer Login
+							</button>
+						)}
+					</CloseCart>
+				</>
+			) : (
+				<Nothing>
+					<h1>O seu carrinho esta vazio</h1>
+				</Nothing>
+			)}
 		</Container>
 	);
 }
 
 const H1 = styled.h1`
-	font-size: 22px;
+	font-size: 1.5em;
 	width: calc(100% - 50px);
 	margin-bottom: 25px;
 `;

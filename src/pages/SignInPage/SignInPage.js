@@ -1,14 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors';
 
+import SearchContext from '../../contexts/SearchContext';
 import UserContext from '../../contexts/UserContext';
 import axios from 'axios';
 import styled from 'styled-components';
+import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignInPage() {
 	const navigate = useNavigate();
 	const { userData, setUserData, afterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const baseURL = process.env.REACT_APP_API_BASE_URL;
 	const [disabled, setDisabled] = React.useState(false);
 	const [form, setForm] = React.useState({
@@ -16,20 +19,30 @@ export default function SignInPage() {
 		password: '',
 	});
 
+	useEffect(() => {
+		setSearchInfo({ tags: [] });
+
+		if (userData?.isLogged !== null && userData?.isLogged !== undefined) {
+			if (userData?.isLogged) {
+				swal({ text: `${userData?.name}, você já está logado!`, icon: 'success' });
+				navigate('/');
+			}
+		}
+	}, [navigate, userData]);
+
 	function postLogin(event) {
 		setDisabled(true);
 		event.preventDefault();
 		const URL = `${baseURL}/sign-in`;
-        let body;
-        if (userData?.token !== undefined && !userData?.isLogged){
-            body = { 
-                ...form,
-                oldToken: `Bearer ${userData.token}`
-            };
-        }else{
-            body = {...form}
-        }
-        
+		let body;
+		if (userData?.token !== undefined && !userData?.isLogged) {
+			body = {
+				...form,
+				oldToken: `Bearer ${userData.token}`,
+			};
+		} else {
+			body = { ...form };
+		}
 
 		const request = axios.post(URL, body);
 

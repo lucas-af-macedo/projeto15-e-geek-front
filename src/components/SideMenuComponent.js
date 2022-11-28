@@ -1,33 +1,42 @@
 import { detailColor, textAccentColor } from '../constants/colors';
+import { useContext, useState } from 'react';
 
 import { GiPillow } from 'react-icons/gi';
 import { GrMenu } from 'react-icons/gr';
 import { IoShirtOutline } from 'react-icons/io5';
 import { MdOutlineSmartToy } from 'react-icons/md';
+import SearchContext from '../contexts/SearchContext';
 import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function SideMenuComponent() {
 	const navigate = useNavigate();
+	const { setSearchInfo } = useContext(SearchContext);
 	const [sideMenu, setSideMenu] = useState(false);
+
+	function handleSearch(id) {
+		console.log(id);
+		const tag = id.toLowerCase();
+		setSearchInfo({ tags: [tag] });
+		navigate('/search');
+	}
 
 	return (
 		<SideMenuBox>
 			<MenuIcon size='1.2rem' color={textAccentColor} onClick={() => setSideMenu(!sideMenu)} />
 			<img src={logo} alt='Logo' />
 			<h1 onClick={() => navigate('/')}>E-GEEK</h1>
-			<SideMenu display={sideMenu}>
-				<li onClick={() => navigate('/search')}>
+			<SideMenu display={sideMenu ? 'true' : 'false'}>
+				<li onClick={() => handleSearch('Vestuário')}>
 					<IoShirtOutline style={{ marginRight: '0.4em' }} />
 					Vestuário
 				</li>
-				<li onClick={() => navigate('/search')}>
+				<li onClick={() => handleSearch('Decoração')}>
 					<GiPillow style={{ marginRight: '0.4em' }} />
 					Decoração
 				</li>
-				<li onClick={() => navigate('/search')}>
+				<li onClick={() => handleSearch('Funko')}>
 					<MdOutlineSmartToy style={{ marginRight: '0.4em' }} />
 					Funko Pop!
 				</li>
@@ -62,7 +71,7 @@ const MenuIcon = styled(GrMenu)`
 	}
 `;
 const SideMenu = styled.ul`
-	display: ${(props) => (props.display ? 'initial' : 'none')};
+	display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
 	position: absolute;
 	background-color: ${detailColor};
 	width: 200px;
@@ -87,7 +96,7 @@ const SideMenu = styled.ul`
 		}
 	}
 	@media (min-width: 660px) {
-		display: ${(props) => (props.display ? 'flex' : 'none')};
+		display: ${(props) => (props.display === 'true' ? 'flex' : 'none')};
 		justify-content: space-around;
 		width: 100vw;
 		max-width: 100vw;

@@ -2,24 +2,27 @@ import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors';
 
 import ItemCheckout from './ItemCheckout';
+import Loading from '../../components/Loading.js';
+import SearchContext from '../../contexts/SearchContext';
 import UserContext from '../../contexts/UserContext';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import Loading from '../../components/Loading.js';
 import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
 
 export default function CheckoutPage() {
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const [cartItens, setCartItens] = React.useState([]);
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
-    const [selectedPayment, setSelectedPayment] = React.useState('Dinheiro')
+  const [loading, setLoading] = React.useState(false);
+  const [selectedPayment, setSelectedPayment] = React.useState('Dinheiro');
 
 	useEffect(() => {
-        setLoading(true);
+		setSearchInfo({ tags: [] });
+		setLoading(true);
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
 		if (userData === null) {
@@ -30,7 +33,7 @@ export default function CheckoutPage() {
 			}
 		}
 
-		if (!userSend?.isLogged || userSend?.isLogged == undefined) {
+		if (!userSend?.isLogged || userSend?.isLogged === undefined) {
 			navigate('/');
 		}
 
@@ -44,13 +47,13 @@ export default function CheckoutPage() {
 			axios
 				.get(`${process.env.REACT_APP_API_BASE_URL}/cartItens`, config)
 				.then((answer) => {
-                    setLoading(false);
+					setLoading(false);
 					setCartItens(answer.data);
 
 					let totalCart = 0;
-                    if(answer.data.length===0){
-                       navigate('/');
-                    }
+					if (answer.data.length === 0) {
+						navigate('/');
+					}
 
 					answer.data.forEach((element) => {
 						totalCart = totalCart + element.price * element.amount;
@@ -58,11 +61,11 @@ export default function CheckoutPage() {
 					setTotal(totalCart);
 				})
 				.catch((answer) => {
-                    setLoading(false);
+					setLoading(false);
 					console.log(answer.data);
 				});
 		}
-	}, []);
+	}, [navigate]);
 
 	function closePurchase() {
         setDisableBuy(true)
@@ -137,7 +140,7 @@ const Checkout = styled.div`
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
-`
+`;
 
 const FormOfPayment = styled.div`
     max-width: 660px;
@@ -155,10 +158,10 @@ const FormOfPayment = styled.div`
         outline: 0px;
         border-radius: 5px;
     }
-`
+`;
 
 const H1 = styled.h1`
-	font-size: 22px;
+	font-size: 1.5em;
 	width: calc(100% - 50px);
 	margin-bottom: 25px;
 `;
