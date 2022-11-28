@@ -17,7 +17,8 @@ export default function CheckoutPage() {
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
-	const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [selectedPayment, setSelectedPayment] = React.useState('Dinheiro');
 
 	useEffect(() => {
 		setSearchInfo({ tags: [] });
@@ -67,62 +68,97 @@ export default function CheckoutPage() {
 	}, [navigate]);
 
 	function closePurchase() {
-		setDisableBuy(true);
-		const config = {
-			headers: {
-				authorization: `Bearer ${userData.token}`,
-			},
-		};
-		axios
-			.post(`${process.env.REACT_APP_API_BASE_URL}/sale`, {}, config)
-			.then((answer) => {
-				swal('Sua compra foi realizada com sucesso!', { icon: 'success' });
-				setAfterSignInGoTo('/');
-				navigate('/');
-			})
-			.catch((answer) => {
-				swal('Ouve um erro ao efetuar a sua compra!', { icon: 'error' });
-				setDisableBuy(false);
-				console.log(answer.data);
-			});
+        setDisableBuy(true)
+        const body = {
+            payment: selectedPayment
+        };
+        const config = {
+            headers:{
+                authorization: `Bearer ${userData.token}`,
+            },
+        };
+        axios
+            .post(`${process.env.REACT_APP_API_BASE_URL}/sale`, body,config)
+            .then((answer) => {
+                swal("Sua compra foi realizada com sucesso!", { icon: 'success' });
+                setAfterSignInGoTo('/');
+		        navigate('/');
+            })
+            .catch((answer) => {
+                swal("Ouve um erro ao efetuar a sua compra!", { icon: 'error' });
+                setDisableBuy(false)
+                console.log(answer.data);
+            });
 	}
+
+    function payment(e){
+        setSelectedPayment(e.target.value)
+    }
 
 	return (
 		<Container>
-			{loading ? (
-				<Loading size={150} />
-			) : (
-				<>
-					<CartBox>
-						<H1>Checkout</H1>
-						{cartItens.map((element) => (
-							<ItemCheckout key={element._id} item={element} />
-						))}
-						<TotalBox>
-							<h1>Total:</h1>
-							<h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
-						</TotalBox>
-					</CartBox>
-					<FormOfPayment>
-						<h3>Escolha a forma de pagamento</h3>
-						<select>
-							<option>Dinheiro</option>
-							<option>Cartão</option>
-							<option>Pix</option>
-						</select>
-					</FormOfPayment>
-					<CloseCart>
-						<button onClick={closePurchase} disabled={disableBuy}>
-							Confirmar compra
-						</button>
-					</CloseCart>
-				</>
-			)}
-		</Container>
+            {loading?
+                <Loading size={150} />:
+                <Checkout>
+                    <CartBox>
+                        <H1>Checkout</H1>
+                        {cartItens.map((element) => (
+                            <ItemCheckout key={element._id} item={element} />
+                        ))}
+                        <TotalBox>
+                            <h1>Total:</h1>
+                            <h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
+                        </TotalBox>
+                    </CartBox>
+                    <FormOfPayment>
+                        <h3>Escolha a forma de pagamento:</h3>
+                        <select onChange={payment} >
+                            <option>Dinheiro</option>
+                            <option>Cartão</option>
+                            <option>Pix</option>
+                        </select>
+                    </FormOfPayment>
+                    <CloseCart>
+                        <button onClick={closePurchase} disabled={disableBuy}>
+                            Confirmar compra
+                        </button>
+                    </CloseCart>
+                </Checkout>
+            }
+        </Container>
+            
 	);
 }
 
-const FormOfPayment = styled.div``;
+const Checkout = styled.div`
+    width: fit-content;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (min-width: 660px) {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+`;
+
+const FormOfPayment = styled.div`
+    max-width: 660px;
+    margin-top: -15px;
+    width: 100%;
+    padding: 10px;
+    h3{
+        font-size: 18px;
+        width: 100%;
+    }
+    select{
+        margin-top: 10px;
+        width: 200px;
+        height: 37px;
+        outline: 0px;
+        border-radius: 5px;
+    }
+`;
 
 const H1 = styled.h1`
 	font-size: 1.5em;
@@ -145,7 +181,6 @@ const CartBox = styled.div`
 	max-width: 660px;
 	width: 100vw;
 	height: 100%;
-	background-color: ${baseColor};
 	padding: 20px;
 `;
 
@@ -163,6 +198,8 @@ const TotalBox = styled.div`
 `;
 
 const CloseCart = styled.div`
+    width: fit-content;
+    padding-bottom: 15px;
 	button {
 		display: inline-flex;
 		position: relative;
