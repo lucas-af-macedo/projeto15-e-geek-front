@@ -16,6 +16,7 @@ export default function CheckoutPage() {
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
     const [loading, setLoading] = React.useState(false);
+    const [selectedPayment, setSelectedPayment] = React.useState('Dinheiro')
 
 	useEffect(() => {
         setLoading(true);
@@ -65,15 +66,18 @@ export default function CheckoutPage() {
 
 	function closePurchase() {
         setDisableBuy(true)
+        const body = {
+            payment: selectedPayment
+        };
         const config = {
             headers:{
                 authorization: `Bearer ${userData.token}`,
             },
         };
         axios
-            .post(`${process.env.REACT_APP_API_BASE_URL}/sale`,{},config)
+            .post(`${process.env.REACT_APP_API_BASE_URL}/sale`, body,config)
             .then((answer) => {
-                swal("Sua compra foi realizada com sucesso!", { icon: 'sucess' });
+                swal("Sua compra foi realizada com sucesso!", { icon: 'success' });
                 setAfterSignInGoTo('/');
 		        navigate('/');
             })
@@ -84,12 +88,15 @@ export default function CheckoutPage() {
             });
 	}
 
+    function payment(e){
+        setSelectedPayment(e.target.value)
+    }
+
 	return (
 		<Container>
-            
             {loading?
                 <Loading size={150} />:
-                <>
+                <Checkout>
                     <CartBox>
                         <H1>Checkout</H1>
                         {cartItens.map((element) => (
@@ -101,8 +108,8 @@ export default function CheckoutPage() {
                         </TotalBox>
                     </CartBox>
                     <FormOfPayment>
-                        <h3>Escolha a forma de pagamento</h3>
-                        <select>
+                        <h3>Escolha a forma de pagamento:</h3>
+                        <select onChange={payment} >
                             <option>Dinheiro</option>
                             <option>Cartão</option>
                             <option>Pix</option>
@@ -113,15 +120,41 @@ export default function CheckoutPage() {
                             Confirmar compra
                         </button>
                     </CloseCart>
-                </>
+                </Checkout>
             }
         </Container>
             
 	);
 }
 
-const FormOfPayment = styled.div`
+const Checkout = styled.div`
+    width: fit-content;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (min-width: 660px) {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+`
 
+const FormOfPayment = styled.div`
+    max-width: 660px;
+    margin-top: -15px;
+    width: 100%;
+    padding: 10px;
+    h3{
+        font-size: 18px;
+        width: 100%;
+    }
+    select{
+        margin-top: 10px;
+        width: 200px;
+        height: 37px;
+        outline: 0px;
+        border-radius: 5px;
+    }
 `
 
 const H1 = styled.h1`
@@ -145,7 +178,6 @@ const CartBox = styled.div`
 	max-width: 660px;
 	width: 100vw;
 	height: 100%;
-	background-color: ${baseColor};
 	padding: 20px;
 `;
 
@@ -163,6 +195,8 @@ const TotalBox = styled.div`
 `;
 
 const CloseCart = styled.div`
+    width: fit-content;
+    padding-bottom: 15px;
 	button {
 		display: inline-flex;
 		position: relative;
