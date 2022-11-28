@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors';
 
+import SearchContext from '../../contexts/SearchContext';
 import UserContext from '../../contexts/UserContext';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -10,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 export default function SignInPage() {
 	const navigate = useNavigate();
 	const { userData, setUserData, afterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const baseURL = process.env.REACT_APP_API_BASE_URL;
 	const [disabled, setDisabled] = React.useState(false);
 	const [form, setForm] = React.useState({
@@ -18,6 +20,8 @@ export default function SignInPage() {
 	});
 
 	useEffect(() => {
+		setSearchInfo({ tags: [] });
+
 		if (userData?.isLogged !== null && userData?.isLogged !== undefined) {
 			if (userData?.isLogged) {
 				swal({ text: `${userData?.name}, você já está logado!`, icon: 'success' });

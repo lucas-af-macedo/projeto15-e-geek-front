@@ -1,5 +1,5 @@
 import { accentColor, detailColor, textAccentColor } from '../constants/colors';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { GrSearch } from 'react-icons/gr';
 import SearchContext from '../contexts/SearchContext.js';
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
 	const navigate = useNavigate();
-	const { userData } = useContext(UserContext);
+	const { userData, setUserData } = useContext(UserContext);
 	const { searchInfo, setSearchInfo } = useContext(SearchContext);
 	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
@@ -156,6 +156,9 @@ const UserMenu = styled.ul`
 		:nth-child(1),
 		:nth-child(2) {
 			display: ${(props) => (props.hide ? 'inherit' : 'none')};
+		}
+		:nth-child(4) {
+			display: ${(props) => (props.hide ? 'none' : 'inherit')};
 		}
 	}
 `;

@@ -1,17 +1,26 @@
 import { detailColor, textAccentColor } from '../constants/colors';
+import { useContext, useState } from 'react';
 
 import { GiPillow } from 'react-icons/gi';
 import { GrMenu } from 'react-icons/gr';
 import { IoShirtOutline } from 'react-icons/io5';
 import { MdOutlineSmartToy } from 'react-icons/md';
+import SearchContext from '../contexts/SearchContext';
 import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function SideMenuComponent() {
 	const navigate = useNavigate();
+	const { searchInfo, setSearchInfo } = useContext(SearchContext);
 	const [sideMenu, setSideMenu] = useState(false);
+
+	function handleSearch(id) {
+		console.log(id);
+		const tag = id.toLowerCase();
+		setSearchInfo({ tags: [tag] });
+		navigate('/search');
+	}
 
 	return (
 		<SideMenuBox>
@@ -19,15 +28,15 @@ export default function SideMenuComponent() {
 			<img src={logo} alt='Logo' />
 			<h1 onClick={() => navigate('/')}>E-GEEK</h1>
 			<SideMenu display={sideMenu}>
-				<li onClick={() => navigate('/search')}>
+				<li onClick={() => handleSearch('Vestuário')}>
 					<IoShirtOutline style={{ marginRight: '0.4em' }} />
 					Vestuário
 				</li>
-				<li onClick={() => navigate('/search')}>
+				<li onClick={() => handleSearch('Decoração')}>
 					<GiPillow style={{ marginRight: '0.4em' }} />
 					Decoração
 				</li>
-				<li onClick={() => navigate('/search')}>
+				<li onClick={() => handleSearch('Funko')}>
 					<MdOutlineSmartToy style={{ marginRight: '0.4em' }} />
 					Funko Pop!
 				</li>

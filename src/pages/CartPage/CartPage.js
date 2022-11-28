@@ -3,6 +3,7 @@ import { baseColor, detailColor, textBaseColor } from '../../constants/colors.js
 
 import ItemCart from './ItemCart.js';
 import Loading from '../../components/Loading.js';
+import SearchContext from '../../contexts/SearchContext.js';
 import UserContext from '../../contexts/UserContext.js';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -10,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CartPage() {
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const [cartItens, setCartItens] = React.useState([]);
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
@@ -17,6 +19,7 @@ export default function CartPage() {
 	const [loading, setLoading] = React.useState(false);
 
 	useEffect(() => {
+		setSearchInfo({ tags: [] });
 		setLoading(true);
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
