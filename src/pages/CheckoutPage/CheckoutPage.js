@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from 'react';
 import { baseColor, detailColor, textBaseColor } from '../../constants/colors';
 
 import ItemCheckout from './ItemCheckout';
+import Loading from '../../components/Loading.js';
 import UserContext from '../../contexts/UserContext';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import Loading from '../../components/Loading.js';
 import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
 
 export default function CheckoutPage() {
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
@@ -15,10 +15,10 @@ export default function CheckoutPage() {
 	const [total, setTotal] = React.useState(0);
 	const [disableBuy, setDisableBuy] = React.useState(false);
 	const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 
 	useEffect(() => {
-        setLoading(true);
+		setLoading(true);
 		setAfterSignInGoTo('/cart');
 		let userSend = userData;
 		if (userData === null) {
@@ -43,13 +43,13 @@ export default function CheckoutPage() {
 			axios
 				.get(`${process.env.REACT_APP_API_BASE_URL}/cartItens`, config)
 				.then((answer) => {
-                    setLoading(false);
+					setLoading(false);
 					setCartItens(answer.data);
 
 					let totalCart = 0;
-                    if(answer.data.length===0){
-                       navigate('/');
-                    }
+					if (answer.data.length === 0) {
+						navigate('/');
+					}
 
 					answer.data.forEach((element) => {
 						totalCart = totalCart + element.price * element.amount;
@@ -57,72 +57,69 @@ export default function CheckoutPage() {
 					setTotal(totalCart);
 				})
 				.catch((answer) => {
-                    setLoading(false);
+					setLoading(false);
 					console.log(answer.data);
 				});
 		}
 	}, [navigate]);
 
 	function closePurchase() {
-        setDisableBuy(true)
-        const config = {
-            headers:{
-                authorization: `Bearer ${userData.token}`,
-            },
-        };
-        axios
-            .post(`${process.env.REACT_APP_API_BASE_URL}/sale`,{},config)
-            .then((answer) => {
-                swal("Sua compra foi realizada com sucesso!", { icon: 'sucess' });
-                setAfterSignInGoTo('/');
-		        navigate('/');
-            })
-            .catch((answer) => {
-                swal("Ouve um erro ao efetuar a sua compra!", { icon: 'error' });
-                setDisableBuy(false)
-                console.log(answer.data);
-            });
+		setDisableBuy(true);
+		const config = {
+			headers: {
+				authorization: `Bearer ${userData.token}`,
+			},
+		};
+		axios
+			.post(`${process.env.REACT_APP_API_BASE_URL}/sale`, {}, config)
+			.then((answer) => {
+				swal('Sua compra foi realizada com sucesso!', { icon: 'success' });
+				setAfterSignInGoTo('/');
+				navigate('/');
+			})
+			.catch((answer) => {
+				swal('Ouve um erro ao efetuar a sua compra!', { icon: 'error' });
+				setDisableBuy(false);
+				console.log(answer.data);
+			});
 	}
 
 	return (
 		<Container>
-            
-            {loading?
-                <Loading size={150} />:
-                <>
-                    <CartBox>
-                        <H1>Checkout</H1>
-                        {cartItens.map((element) => (
-                            <ItemCheckout key={element._id} item={element} />
-                        ))}
-                        <TotalBox>
-                            <h1>Total:</h1>
-                            <h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
-                        </TotalBox>
-                    </CartBox>
-                    <FormOfPayment>
-                        <h3>Escolha a forma de pagamento</h3>
-                        <select>
-                            <option>Dinheiro</option>
-                            <option>Cartão</option>
-                            <option>Pix</option>
-                        </select>
-                    </FormOfPayment>
-                    <CloseCart>
-                        <button onClick={closePurchase} disabled={disableBuy}>
-                            Confirmar compra
-                        </button>
-                    </CloseCart>
-                </>
-            }
-        </Container>
-            
+			{loading ? (
+				<Loading size={150} />
+			) : (
+				<>
+					<CartBox>
+						<H1>Checkout</H1>
+						{cartItens.map((element) => (
+							<ItemCheckout key={element._id} item={element} />
+						))}
+						<TotalBox>
+							<h1>Total:</h1>
+							<h2>R$ {String(total.toFixed(2).replace('.', ','))}</h2>
+						</TotalBox>
+					</CartBox>
+					<FormOfPayment>
+						<h3>Escolha a forma de pagamento</h3>
+						<select>
+							<option>Dinheiro</option>
+							<option>Cartão</option>
+							<option>Pix</option>
+						</select>
+					</FormOfPayment>
+					<CloseCart>
+						<button onClick={closePurchase} disabled={disableBuy}>
+							Confirmar compra
+						</button>
+					</CloseCart>
+				</>
+			)}
+		</Container>
 	);
 }
 
-const FormOfPayment = styled.div`
-
-`
+const FormOfPayment = styled.div``;
 
 const H1 = styled.h1`
 	font-size: 1.5em;
