@@ -1,177 +1,182 @@
-import styled from "styled-components";
-import React, { useContext } from "react";
-import axios from "axios";
-import UserContext from "../../contexts/UserContext";
+import React, { useContext } from 'react';
 import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
 
-export default function ItemCart({item, reloadComponent, setDisableBuy}){
-    const { userData } = useContext(UserContext);
-    const [amount, setAmount] = React.useState(item.amount)
-    const [disabled, setDisabled] = React.useState(false)
+import UserContext from '../../contexts/UserContext';
+import axios from 'axios';
+import styled from 'styled-components';
 
-    function handleForm(e) {
+export default function ItemCart({ item, reloadComponent, setDisableBuy }) {
+	const { userData } = useContext(UserContext);
+	const [amount, setAmount] = React.useState(item.amount);
+	const [disabled, setDisabled] = React.useState(false);
+
+	function handleForm(e) {
 		let qty = amount;
-        setDisableBuy(true)
-        setDisabled(true)
-        const config = {
-            headers:{
-                authorization: `Bearer ${userData.token}`
-            }
-        };
-
+		setDisableBuy(true);
+		setDisabled(true);
+		const config = {
+			headers: {
+				authorization: `Bearer ${userData.token}`,
+			},
+		};
 
 		if (e.target.id === 'increment') {
 			qty++;
 		} else {
 			qty--;
 		}
-        
-        const body = {
-            amount: qty,
-            itemId: item._id
-        }
-        if(qty<1){
-            qty=1
-        }
+
+		const body = {
+			amount: qty,
+			itemId: item._id,
+		};
+		if (qty < 1) {
+			qty = 1;
+		}
 		setAmount(qty);
-        
-        if(qty!==amount){
-            axios.put(`${process.env.REACT_APP_API_BASE_URL}/cartItem`,body, config)
-                .then(answer=>{
-                    setDisabled(false)
-                    reloadComponent()
-                })
-                .catch(answer=>{
-                    setDisabled(false)
-                    console.log(answer.data)
-                })
-        }else{
-            setDisabled(false)
-            setDisableBuy(false)
-        }
+
+		if (qty !== amount) {
+			axios
+				.put(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
+				.then((answer) => {
+					setDisabled(false);
+					reloadComponent();
+				})
+				.catch((answer) => {
+					setDisabled(false);
+					console.log(answer.data);
+				});
+		} else {
+			setDisabled(false);
+			setDisableBuy(false);
+		}
 	}
 
-	function handleFormInput(e){
+	function handleFormInput(e) {
 		let qty = amount;
-		
-		if (e.target.value>=0){
-			qty = e.target.value
-		} else if (e.target.value === ''){
-			qty = e.target.value
+
+		if (e.target.value >= 0) {
+			qty = e.target.value;
+		} else if (e.target.value === '') {
+			qty = e.target.value;
 		}
 		setAmount(qty);
 	}
 
-	function handleFormInputLeave(e){
-        setDisabled(true)
-        setDisableBuy(true)
+	function handleFormInputLeave(e) {
+		setDisabled(true);
+		setDisableBuy(true);
 		let qty = amount;
 
-		if (e.target.value<1){
-			qty = 1
-		} else if (e.target.value === ''){
-			qty = 1
+		if (e.target.value < 1) {
+			qty = 1;
+		} else if (e.target.value === '') {
+			qty = 1;
 		}
 		setAmount(qty);
-        if(qty!==item.amount){
-            
-            const config = {
-                headers:{
-                    authorization: `Bearer ${userData.token}`
-                }
-            };
-            const body = {
-                amount: qty,
-                itemId: item._id
-            }
+		if (qty !== item.amount) {
+			const config = {
+				headers: {
+					authorization: `Bearer ${userData.token}`,
+				},
+			};
+			const body = {
+				amount: qty,
+				itemId: item._id,
+			};
 
-            axios.put(`${process.env.REACT_APP_API_BASE_URL}/cartItem`,body, config)
-                .then(answer=>{
-                    setDisabled(false)
-                    reloadComponent()
-                })
-                .catch(answer=>{
-                    setDisabled(false)
-                    console.log(answer.data)
-                })
-        }
+			axios
+				.put(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
+				.then((answer) => {
+					setDisabled(false);
+					reloadComponent();
+				})
+				.catch((answer) => {
+					setDisabled(false);
+					console.log(answer.data);
+				});
+		}
 	}
 
-    function deleteItem(){
-        setDisabled(true)
-        setDisableBuy(true)
-        const config = {
-            headers:{
-                authorization: `Bearer ${userData.token}`
-            }
-        };
+	function deleteItem() {
+		setDisabled(true);
+		setDisableBuy(true);
+		const config = {
+			headers: {
+				authorization: `Bearer ${userData.token}`,
+			},
+		};
 
-        axios.delete(`${process.env.REACT_APP_API_BASE_URL}/cartItem/${item._id}`, config)
-            .then(answer=>{
-                setDisabled(false)
-                reloadComponent()
-            })
-            .catch(answer=>{
-                setDisabled(false)
-                console.log(answer.data)
-            })
-    }
+		axios
+			.delete(`${process.env.REACT_APP_API_BASE_URL}/cartItem/${item._id}`, config)
+			.then((answer) => {
+				setDisabled(false);
+				reloadComponent();
+			})
+			.catch((answer) => {
+				setDisabled(false);
+				console.log(answer.data);
+			});
+	}
 
-
-    return(
-        <Container>
-            <ImageBox>
-                <img src={item.mainimage} alt={item.name} />
-            </ImageBox>
-            <Information>
-                <TopBox>
-                    <h1>{item.name}</h1>
-                    <ion-icon name="trash-outline" onClick={deleteItem} ></ion-icon>
-                </TopBox>
-                <BottonBox>
-                    <form>
-                        <button id='decrement' type='button' onClick={handleForm} disabled={disabled}>
-                            &mdash;
-                        </button>
-                        <input type='number' value={amount} onChange={handleFormInput} onBlur={handleFormInputLeave} disabled={disabled}/>
-                        <button id='increment' type='button' onClick={handleForm} disabled={disabled}>
-                            &#xff0b;
-                        </button>
-                    </form>
-                    <h2>{String((item.amount*item.price).toFixed(2)).replace('.',',')}</h2>
-                </BottonBox>
-            </Information>
-        </Container>
-    )
+	return (
+		<Container>
+			<ImageBox>
+				<img src={item.mainimage} alt={item.name} />
+			</ImageBox>
+			<Information>
+				<TopBox>
+					<h1>{item.name}</h1>
+					<ion-icon name='trash-outline' onClick={deleteItem}></ion-icon>
+				</TopBox>
+				<BottonBox>
+					<form>
+						<button id='decrement' type='button' onClick={handleForm} disabled={disabled}>
+							&mdash;
+						</button>
+						<input
+							type='number'
+							value={amount}
+							onChange={handleFormInput}
+							onBlur={handleFormInputLeave}
+							disabled={disabled}
+						/>
+						<button id='increment' type='button' onClick={handleForm} disabled={disabled}>
+							&#xff0b;
+						</button>
+					</form>
+					<h2>{String((item.amount * item.price).toFixed(2)).replace('.', ',')}</h2>
+				</BottonBox>
+			</Information>
+		</Container>
+	);
 }
 
-
-
 const Container = styled.div`
-    height: 100px;
-    border-bottom: 1px solid silver;
-    display: flex;
-    align-items: center;
-    &:first-of-type{
-        border-top: 1px solid silver;
-    }
-`
+	height: 100px;
+	border-bottom: 1px solid silver;
+	display: flex;
+	align-items: center;
+	&:first-of-type {
+		border-top: 1px solid silver;
+	}
+`;
 
 const TopBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    h1{
-        font-size: 14px;
-    }
-`
+	display: flex;
+	justify-content: space-between;
+	h1 {
+		font-size: 14px;
+	}
+`;
 
 const BottonBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    h2{
-        font-size: 16px;
-    }
-    form {
+	display: flex;
+	justify-content: space-between;
+	h2 {
+		font-size: 16px;
+	}
+	form {
 		display: flex;
 		margin-bottom: 5px;
 		justify-content: center;
@@ -187,6 +192,12 @@ const BottonBox = styled.div`
 			border-top: 0 solid ${accentColor};
 			border-bottom: 0 solid ${accentColor};
 			text-align: center;
+			-moz-appearance: textfield;
+			::-webkit-outer-spin-button,
+			::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
 		}
 		button {
 			width: 40%;
@@ -208,26 +219,26 @@ const BottonBox = styled.div`
 			}
 		}
 	}
-`
+`;
 
 const ImageBox = styled.div`
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    img{
-        height: 50px;
-    }
-`
+	width: 80px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+	img {
+		height: 50px;
+	}
+`;
 
 const Information = styled.div`
-    margin-left: 15px;
-    height: 70px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-right: 20px;
-`
+	margin-left: 15px;
+	height: 70px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding-right: 20px;
+`;
