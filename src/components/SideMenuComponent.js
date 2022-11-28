@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SideMenuComponent() {
 	const navigate = useNavigate();
-	const { searchInfo, setSearchInfo } = useContext(SearchContext);
+	const { setSearchInfo } = useContext(SearchContext);
 	const [sideMenu, setSideMenu] = useState(false);
 
 	function handleSearch(id) {
@@ -27,7 +27,7 @@ export default function SideMenuComponent() {
 			<MenuIcon size='1.2rem' color={textAccentColor} onClick={() => setSideMenu(!sideMenu)} />
 			<img src={logo} alt='Logo' />
 			<h1 onClick={() => navigate('/')}>E-GEEK</h1>
-			<SideMenu display={sideMenu}>
+			<SideMenu display={sideMenu ? 'true' : 'false'}>
 				<li onClick={() => handleSearch('Vestuário')}>
 					<IoShirtOutline style={{ marginRight: '0.4em' }} />
 					Vestuário
@@ -71,7 +71,7 @@ const MenuIcon = styled(GrMenu)`
 	}
 `;
 const SideMenu = styled.ul`
-	display: ${(props) => (props.display ? 'initial' : 'none')};
+	display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
 	position: absolute;
 	background-color: ${detailColor};
 	width: 200px;
@@ -96,7 +96,7 @@ const SideMenu = styled.ul`
 		}
 	}
 	@media (min-width: 660px) {
-		display: ${(props) => (props.display ? 'flex' : 'none')};
+		display: ${(props) => (props.display === 'true' ? 'flex' : 'none')};
 		justify-content: space-around;
 		width: 100vw;
 		max-width: 100vw;

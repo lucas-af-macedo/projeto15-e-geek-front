@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
 	const navigate = useNavigate();
-	const { userData, setUserData } = useContext(UserContext);
+	const { userData } = useContext(UserContext);
 	const { searchInfo, setSearchInfo } = useContext(SearchContext);
 	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
@@ -56,7 +56,7 @@ export default function Header() {
 				) : (
 					<UserIcon size='1.8rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
 				)}
-				<UserMenu display={userMenu} hide={!userData?.isLogged}>
+				<UserMenu display={userMenu ? 'true' : 'false'} hide={!userData?.isLogged ? 'true' : 'false'}>
 					<li onClick={() => navigate('/sign-in')}>LogIn</li>
 					<li onClick={() => navigate('/sign-up')}>Cadastro</li>
 					<li onClick={() => navigate('/cart')}>Carrinho</li>
@@ -128,7 +128,7 @@ const UserIcon = styled(SlUserFemale)`
 	cursor: pointer;
 `;
 const UserMenu = styled.ul`
-	display: ${(props) => (props.display ? 'initial' : 'none')};
+	display: ${(props) => (props.display === 'true' ? 'initial' : 'none')};
 	position: absolute;
 	top: 3.5rem;
 	right: 0;
@@ -155,10 +155,10 @@ const UserMenu = styled.ul`
 		}
 		:nth-child(1),
 		:nth-child(2) {
-			display: ${(props) => (props.hide ? 'inherit' : 'none')};
+			display: ${(props) => (props.hide === 'true' ? 'inherit' : 'none')};
 		}
 		:nth-child(4) {
-			display: ${(props) => (props.hide ? 'none' : 'inherit')};
+			display: ${(props) => (props.hide === 'true' ? 'none' : 'inherit')};
 		}
 	}
 `;

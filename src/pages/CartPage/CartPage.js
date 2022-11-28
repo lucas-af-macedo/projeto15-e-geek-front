@@ -53,6 +53,8 @@ export default function CartPage() {
 					setLoading(false);
 					console.log(answer.data);
 				});
+		} else {
+			setLoading(false);
 		}
 	}, []);
 
