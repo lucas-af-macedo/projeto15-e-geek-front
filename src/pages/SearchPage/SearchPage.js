@@ -7,13 +7,12 @@ import Product from '../../components/Product.js';
 import axios from 'axios';
 import styled from 'styled-components';
 
-export default function ProductsPage() {
+export default function SearchPage() {
 	const [products, setProducts] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [changePage, setChangePage] = useState({ page: '1', limit: '20' });
 	const [lastPage, setLastPage] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-	// handleProducts
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -29,7 +28,6 @@ export default function ProductsPage() {
 			});
 	}, [changePage]);
 
-	// handleLastPage
 	useEffect(() => {
 		if (products.length < changePage.limit && products.length !== 0) {
 			setLastPage(true);
@@ -54,17 +52,15 @@ export default function ProductsPage() {
 			}
 		}
 	}
-
 	function handleLimit(value) {
 		const newLimit = Number(value);
 		console.log(newLimit);
 		setChangePage({ ...changePage, limit: newLimit });
 	}
-
 	return (
-		<ProductsContainer>
-			<ProductsHeader>
-				<h1>Produtos</h1>
+		<SearchContainer>
+			<SearchHeader>
+				<h1>Pesquisa</h1>
 				<div>
 					<label htmlFor='id'>produtos por página:</label>
 					<select name='limit' id='limit' onChange={(e) => handleLimit(e.target.value)}>
@@ -75,7 +71,7 @@ export default function ProductsPage() {
 						<option value='60'>100</option>
 					</select>
 				</div>
-			</ProductsHeader>
+			</SearchHeader>
 			{loading ? (
 				<Loading size={150} />
 			) : (
@@ -103,11 +99,11 @@ export default function ProductsPage() {
 					</ChangePages>
 				</>
 			)}
-		</ProductsContainer>
+		</SearchContainer>
 	);
 }
 
-const ProductsContainer = styled.div`
+const SearchContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -118,8 +114,7 @@ const ProductsContainer = styled.div`
 		margin: 50px 25px 0 25px;
 	}
 `;
-
-const ProductsHeader = styled.div`
+const SearchHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
