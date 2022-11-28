@@ -1,4 +1,4 @@
-import { accentColor, baseColor, textAccentColor } from '../../constants/colors.js';
+import { accentColor, baseColor, detailColor } from '../../constants/colors.js';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -35,8 +35,9 @@ time, mark, audio, video {
 	::-webkit-scrollbar-thumb {
 		background: ${accentColor};
 		border-radius: 5px;
+		max-height: 50%;
 		:hover {
-			background: ${textAccentColor};
+			background: ${detailColor};
 		}
 	}
 }

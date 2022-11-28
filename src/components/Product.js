@@ -1,5 +1,3 @@
-import { textAccentColor, textBaseColor } from '../../constants/colors';
-
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,7 +34,7 @@ const ProductBox = styled.li`
 	text-align: center;
 	cursor: pointer;
 	background-color: #fff;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+	box-shadow: rgba(20, 30, 97, 0.16) 0px 1px 4px;
 	p {
 		overflow-y: hidden;
 		color: #000;
