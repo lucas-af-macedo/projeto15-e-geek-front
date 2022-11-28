@@ -6,12 +6,14 @@ import SearchContext from '../contexts/SearchContext.js';
 import SideMenuComponent from './SideMenuComponent';
 import { SlUserFemale } from 'react-icons/sl';
 import UserContext from '../contexts/UserContext';
+import axios from 'axios';
 import styled from 'styled-components';
+import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
 	const navigate = useNavigate();
-	const { userData } = useContext(UserContext);
+	const { userData, setUserData } = useContext(UserContext);
 	const { searchInfo, setSearchInfo } = useContext(SearchContext);
 	const [searchInput, setSearchInput] = useState('');
 	const [userMenu, setUserMenu] = useState(false);
@@ -27,6 +29,31 @@ export default function Header() {
 
 	function handleSearch(e) {
 		setSearchInput(e.target.value);
+	}
+
+	function signOut() {
+		const config = {
+			headers: {
+				authorization: `Bearer ${userData.token}`,
+			},
+		};
+		swal('Log Out', 'Você tem certeza que deseja deslogar?', 'warning', { buttons: [true, true] }).then(
+			(res) => {
+				if (res) {
+					axios
+						.delete(`${process.env.REACT_APP_API_BASE_URL}/sign-out`, config)
+						.then((res) => {
+							setUserData({});
+							localStorage.removeItem('userE-geek');
+							swal({ text: 'Você foi deslogado com sucesso', icon: 'success' });
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+					navigate('/');
+				}
+			}
+		);
 	}
 
 	return (
@@ -61,6 +88,7 @@ export default function Header() {
 					<li onClick={() => navigate('/sign-up')}>Cadastro</li>
 					<li onClick={() => navigate('/cart')}>Carrinho</li>
 					<li onClick={() => navigate('/history')}>Histórico</li>
+					<li onClick={signOut}>LogOut</li>
 				</UserMenu>
 			</UserMenuBox>
 		</HeaderContainer>
@@ -157,7 +185,13 @@ const UserMenu = styled.ul`
 		:nth-child(2) {
 			display: ${(props) => (props.hide === 'true' ? 'inherit' : 'none')};
 		}
+		:nth-child(3) {
+			border-bottom: ${(props) => (props.hide === 'true' ? 'none' : 'inherit')};
+		}
 		:nth-child(4) {
+			display: ${(props) => (props.hide === 'true' ? 'none' : 'inherit')};
+		}
+		:nth-child(5) {
 			display: ${(props) => (props.hide === 'true' ? 'none' : 'inherit')};
 		}
 	}
