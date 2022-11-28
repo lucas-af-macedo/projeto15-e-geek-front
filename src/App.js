@@ -6,6 +6,7 @@ import CheckoutPage from './pages/CheckoutPage/CheckoutPage.js';
 import GlobalStyle from './assets/styles/GlobalStyle.js';
 import Header from './components/Header.js';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
+import PurchaseHistoryPage from './pages/PurchaseHistoryPage/PurchaseHistoryPage.js';
 import SearchPage from './pages/SearchPage/SearchPage.js';
 import { SearchProvider } from './contexts/SearchContext.js';
 import SignInPage from './pages/SignInPage/SignInPage';
@@ -34,6 +35,7 @@ function App() {
 						<Route path='/' element={<ProductsPage />} />
 						<Route path='/sign-up' element={<SignUpPage />} />
 						<Route path='/sign-in' element={<SignInPage />} />
+						<Route path='/history' element={<PurchaseHistoryPage />} />
 						<Route path='/product/:id' element={<SingleProductPage />} />
 						<Route path='/search' element={<SearchPage />} />
 						<Route path='/cart' element={<CartPage />} />
