@@ -192,6 +192,14 @@ const AddCartBox = styled.div`
 			border-bottom: 0 solid ${accentColor};
 			text-align: center;
 		}
+		input[type=number]::-webkit-inner-spin-button { 
+			-webkit-appearance: none;
+			
+		}
+		input[type=number] { 
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
 		button {
 			width: 40%;
 			border: 0 solid ${accentColor};
@@ -199,7 +207,7 @@ const AddCartBox = styled.div`
 			text-align: center;
 			text-shadow: 0 1px 0 rgba(#fff, 0.6);
 			cursor: pointer;
-			background: ${baseColor};
+			background: white;
 			&:hover {
 				color: darken(${textBaseColor}, 20%);
 				background: darken(${baseColor}, 10%);
@@ -222,30 +230,41 @@ const FalseBody = styled.div`
 `
 
 const Container = styled.div`
-	background-color: white;
-	width: calc(100vw - 35px);
+	width: 100vw;
 	max-width: 100vw;
 	margin: 0 auto;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	@media (min-width: 660px) {
+		width: calc(100vw - 35px);
+	}
 `
 
 const SingleProductContainer = styled.div`
 	background-color: white;
-	width: calc(100vw - 35px);
+	width: 100vw;
 	max-width: 100vw;
 	margin: 0 auto;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	padding-bottom: 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 
 	@media (min-width: 660px) {
 		flex-direction: row;
+		width: calc(100vw - 35px);
+		max-width: 730px;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 `;
 
 const LeftDiv = styled.div`
+	padding-left: 15px;
+	padding-right: 15px;
 	margin-top: 15px;
 	font-size: 20px;
 	display: flex;
@@ -260,6 +279,8 @@ const LeftDiv = styled.div`
 		margin-top: 15px;
 	}
 	@media (min-width: 660px) {
+		padding-left: 15px;
+		padding-right: 15px;
 		p{
 			display: none;
 		}
@@ -289,6 +310,9 @@ const ImageBox = styled.div`
 `
 
 const RightDiv = styled.div`
+	
+	padding-left: 15px;
+	padding-right: 15px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -303,6 +327,8 @@ const RightDiv = styled.div`
 		display: ${props => (props.size === 'N/A')? 'none':'block' };
 	}
 	@media (min-width: 660px) {
+		padding-left: 0px;
+		padding-right: 0px;
 		margin-left: 20px;
 		margin-top: 25px;
 		width: 270px;
@@ -321,16 +347,26 @@ const RightDiv = styled.div`
 `;
 
 const DescriptionBox = styled.div`
-	margin-top: 30px;
-	max-width: 660px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-top: 20px;
+	max-width: 100%;
 	width: 100%;
+	background-color: white;
+	border-radius: 5px;
+	padding-top: 10px;
+	padding-bottom: 15px;
 	h1{
 		font-size: 20px;
 		width: 100%;
 	}
 	h2{
 		margin-top: 8px;
-		margin-left: 5px;
+		padding-left: 15px;
+		padding-right: 15px;
 		width: 100%;
+	}
+	@media (min-width: 660px) {
+		max-width: 730px;
 	}
 `

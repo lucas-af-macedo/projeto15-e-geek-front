@@ -188,6 +188,14 @@ const BottonBox = styled.div`
 			border-bottom: 0 solid ${accentColor};
 			text-align: center;
 		}
+		input[type=number]::-webkit-inner-spin-button { 
+			-webkit-appearance: none;
+			
+		}
+		input[type=number] { 
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
 		button {
 			width: 40%;
 			border: 0 solid ${accentColor};
@@ -195,7 +203,7 @@ const BottonBox = styled.div`
 			text-align: center;
 			text-shadow: 0 1px 0 rgba(#fff, 0.6);
 			cursor: pointer;
-			background: ${baseColor};
+			background: white;
 			&:hover {
 				background: darken(${baseColor}, 10%);
 				color: darken(${textBaseColor}, 20%);
