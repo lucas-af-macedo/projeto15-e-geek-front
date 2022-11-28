@@ -14,8 +14,8 @@ export default function PurchaseHistoryPage() {
 		<PurchaseHistoryContainer>
 			<h1>Histórico de Compras</h1>
 			<Purchases>
-				<PurchasesTop></PurchasesTop>
-				<PurchasesBottom></PurchasesBottom>
+				<PurchasesTop>a</PurchasesTop>
+				<PurchasesBottom>b</PurchasesBottom>
 			</Purchases>
 		</PurchaseHistoryContainer>
 	);

@@ -49,12 +49,12 @@ export default function Header() {
 				</form>
 			</Search>
 			<UserMenuBox>
-				{userData?.image?.length !== 0 ? (
+				{userData?.image && userData?.image?.length !== 0 ? (
 					<>
-						<img src={userData.image} alt='User' onClick={() => setUserMenu(!userMenu)} />
+						<img src={userData?.image} alt='User' onClick={() => setUserMenu(!userMenu)} />
 					</>
 				) : (
-					<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
+					<UserIcon size='1.8rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
 				)}
 				<UserMenu display={userMenu} hide={!userData?.isLogged}>
 					<li onClick={() => navigate('/sign-in')}>LogIn</li>
@@ -113,7 +113,7 @@ const UserMenuBox = styled.div`
 	align-items: center;
 	width: 3rem;
 	height: 3rem;
-	border: 1px solid ${textAccentColor};
+	border: 2px solid ${textAccentColor};
 	border-radius: 50%;
 	img {
 		width: 3.5rem;

@@ -36,6 +36,7 @@ export default function SignUpPage() {
 		}
 		const body = { ...user };
 		delete body.confirmPass;
+		console.log(body);
 		axios
 			.post(`${process.env.REACT_APP_API_BASE_URL}/sign-up`, body)
 			.then((res) => {
@@ -50,7 +51,7 @@ export default function SignUpPage() {
 	}
 
 	function handleError(error) {
-		switch (error.status) {
+		switch (error?.status) {
 			case 401:
 				swal(`${error.status} ${error.statusText}`, 'Já existe um usuário cadastrado com esse e-mail!', {
 					icon: 'error',
