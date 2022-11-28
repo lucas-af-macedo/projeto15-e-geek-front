@@ -227,6 +227,14 @@ const AddCartBox = styled.div`
 				margin: 0;
 			}
 		}
+		input[type=number]::-webkit-inner-spin-button { 
+			-webkit-appearance: none;
+			
+		}
+		input[type=number] { 
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
 		button {
 			width: 40%;
 			height: 100%;
@@ -235,7 +243,7 @@ const AddCartBox = styled.div`
 			text-align: center;
 			text-shadow: 0 1px 0 rgba(#fff, 0.6);
 			cursor: pointer;
-			background: ${baseColor};
+			background: white;
 			&:hover {
 				color: darken(${textBaseColor}, 20%);
 				background: darken(${baseColor}, 10%);
@@ -258,29 +266,44 @@ const FalseBody = styled.div`
 `;
 
 const Container = styled.div`
+	width: 100vw;
+	max-width: 100vw;
+	margin: 0 auto;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	width: calc(100vw - 35px);
-	max-width: 100vw;
-	margin: 0 auto;
-	background-color: ${baseColor};
-`;
-
-const SingleProductContainer = styled.div`
-	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	width: calc(100vw - 35px);
-	max-width: 100vw;
-	margin: 0 auto;
 	background-color: ${baseColor};
 	@media (min-width: 660px) {
+		width: calc(100vw - 35px);
+	}
+`
+
+const SingleProductContainer = styled.div`
+	//background-color: white;
+	background-color: ${baseColor};
+	width: 100vw;
+	max-width: 100vw;
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding-bottom: 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	@media (min-width: 660px) {
 		flex-direction: row;
+		width: calc(100vw - 35px);
+		max-width: 730px;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 `;
 
 const LeftDiv = styled.div`
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-top: 15px;
+	font-size: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -295,6 +318,8 @@ const LeftDiv = styled.div`
 		margin-bottom: 30px;
 	}
 	@media (min-width: 660px) {
+		padding-left: 15px;
+		padding-right: 15px;
 		p {
 			display: none;
 		}
@@ -324,6 +349,9 @@ const ImageBox = styled.div`
 `;
 
 const RightDiv = styled.div`
+	
+	padding-left: 15px;
+	padding-right: 15px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -338,6 +366,10 @@ const RightDiv = styled.div`
 		display: ${(props) => (props.size === 'N/A' ? 'none' : 'block')};
 	}
 	@media (min-width: 660px) {
+		padding-left: 0px;
+		padding-right: 0px;
+		margin-left: 20px;
+		margin-top: 25px;
 		width: 270px;
 		margin-top: 25px;
 		margin-bottom: 10px;
@@ -356,16 +388,29 @@ const RightDiv = styled.div`
 `;
 
 const DescriptionBox = styled.div`
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-top: 20px;
+	max-width: 100%;
 	width: 100%;
-	max-width: 660px;
-	margin-top: 30px;
-	h1 {
+	background-color: white;
+	border-radius: 5px;
+	padding-top: 10px;
+	padding-bottom: 15px;
+	h1{
+		font-size: 20px;
 		width: 100%;
 		font-size: 20px;
 	}
 	h2 {
 		width: 100%;
 		margin-top: 8px;
+		padding-left: 15px;
+		padding-right: 15px;
+		width: 100%;
 		margin-left: 5px;
 	}
-`;
+	@media (min-width: 660px) {
+		max-width: 730px;
+	}
+`
