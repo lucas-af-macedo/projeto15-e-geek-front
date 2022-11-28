@@ -21,7 +21,7 @@ export default function Product({ product }) {
 	);
 }
 
-const ProductBox = styled.div`
+const ProductBox = styled.li`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
