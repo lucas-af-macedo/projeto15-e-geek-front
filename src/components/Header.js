@@ -1,25 +1,37 @@
-import { GrMenu, GrSearch } from 'react-icons/gr';
+import { accentColor, detailColor, textAccentColor } from '../constants/colors';
 
+import { GrSearch } from 'react-icons/gr';
+import SideMenuComponent from './SideMenuComponent';
 import { SlUserFemale } from 'react-icons/sl';
-import { accentColor } from '../constants/colors';
-import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function Header() {
+	const navigate = useNavigate();
+
+	const [userMenu, setUserMenu] = useState(false);
+
 	return (
 		<HeaderContainer>
-			<div>
-				<GrMenu size='1.2rem' />
-				<img src={logo} alt='Logo' />
-				<h1>E-GEEK</h1>
-			</div>
+			<SideMenuComponent />
 			<Search>
-				<GrSearch style={{ marginLeft: '0.5rem', position: 'absolute' }} color='#623CEA' size='1.2em' />
+				<GrSearch
+					style={{ marginLeft: '0.5rem', position: 'absolute' }}
+					color={detailColor}
+					size='1.2em'
+				/>
 				<SearchBar id='search-bar' type='text' placeholder='Procurar'></SearchBar>
 			</Search>
-			<div>
-				<SlUserFemale size='1.3rem' />
-			</div>
+			<UserMenuBox>
+				<UserIcon size='1.3rem' color={textAccentColor} onClick={() => setUserMenu(!userMenu)} />
+				<UserMenu display={userMenu}>
+					<li onClick={() => navigate('/sign-in')}>LogIn</li>
+					<li onClick={() => navigate('/sign-up')}>Cadastro</li>
+					<li onClick={() => navigate('/cart')}>Carrinho</li>
+					<li onClick={() => navigate('/purchases')}>Histórico</li>
+				</UserMenu>
+			</UserMenuBox>
 		</HeaderContainer>
 	);
 }
@@ -38,19 +50,7 @@ const HeaderContainer = styled.div`
 	top: 0;
 	left: 0;
 	z-index: 3;
-	div {
-		display: flex;
-		align-items: center;
-		h1 {
-			font-size: 25px;
-			font-family: 'Bangers', cursive;
-		}
-		img {
-			width: 30px;
-			height: 30px;
-			margin: 0 5px 0 15px;
-		}
-	}
+	color: ${textAccentColor};
 `;
 
 const Search = styled.div`
@@ -66,4 +66,49 @@ const SearchBar = styled.input`
 	width: 90%;
 	border: 1px solid #fff;
 	border-radius: 50px;
+	:active,
+	:focus {
+		outline-color: ${detailColor};
+	}
+`;
+
+const UserMenuBox = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	border-radius: 50%;
+	border: 1px solid ${textAccentColor};
+	width: 2rem;
+	height: 2rem;
+`;
+const UserIcon = styled(SlUserFemale)`
+	cursor: pointer;
+`;
+const UserMenu = styled.ul`
+	display: ${(props) => (props.display ? 'initial' : 'none')};
+	position: absolute;
+	background-color: ${detailColor};
+	width: fit-content;
+	max-width: 30vw;
+	height: fit-content;
+	font-size: 0.9em;
+	font-weight: 600px;
+	top: 2.4rem;
+	right: 0;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+	border-radius: 5px;
+	li {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid ${textAccentColor};
+		padding: 10px 0;
+		margin: 0 10px;
+		cursor: pointer;
+		text-transform: uppercase;
+		text-align: center;
+		:last-of-type {
+			border: none;
+		}
+	}
 `;

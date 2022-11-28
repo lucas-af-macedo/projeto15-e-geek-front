@@ -1,1 +1,0 @@
-# projeto15-e-geek-front

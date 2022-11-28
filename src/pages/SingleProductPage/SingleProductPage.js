@@ -1,28 +1,41 @@
 import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 
+import Loading from '../../components/Loading.js';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import swal from 'sweetalert';
 import UserContext from '../../contexts/UserContext.js';
 
 export default function SingleProductPage(props) {
+  const navigate = useNavigate();
 	const { userData, setUserData, setAfterSignInGoTo } = useContext(UserContext);
 	const { id } = useParams();
 	const [product, setProduct] = useState({});
 	const [form, setForm] = useState({ qty: 1, price: '' });
+  const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+    setLoading(true);
 		setAfterSignInGoTo(`/product/${id}`)
 		axios
-			.get(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`)
+			.get(`${process.env.REACT_APP_API_BASE_URL}/product/${id}`)
 			.then((res) => {
-				setProduct(res.data);
+				setLoading(false);
+				if (!res.data) {
+					swal({ text: 'Desculpe, não conseguimos encontrar esse produto', icon: 'warning' });
+					navigate('/');
+				} else {
+					setProduct(res.data);
+				}
 			})
 			.catch((err) => {
 				console.log(err);
+				swal({ text: 'Desculpe, não conseguimos encontrar esse produto', icon: 'warning' });
+				navigate('/');
 			});
-	}, [id]);
+	}, [id, navigate]);
 
 	function handleForm(e) {
 		let { qty } = form;
@@ -35,6 +48,7 @@ export default function SingleProductPage(props) {
 		}
 		setForm({ ...form, qty });
 	}
+
 
 	function handleFormInput(e){
 		let { qty } = form;
@@ -57,6 +71,7 @@ export default function SingleProductPage(props) {
 		}
 		setForm({ ...form, qty });
 	}
+
 
 	function addCart(){
 		const body = {
@@ -186,8 +201,8 @@ const AddCartBox = styled.div`
 			cursor: pointer;
 			background: ${baseColor};
 			&:hover {
-				background: darken(${baseColor}, 10%);
 				color: darken(${textBaseColor}, 20%);
+				background: darken(${baseColor}, 10%);
 			}
 			&--left {
 				border-radius: 3px 0 0 3px;

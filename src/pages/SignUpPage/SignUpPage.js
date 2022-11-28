@@ -1,6 +1,7 @@
-import { accentColor, baseColor, textBaseColor } from '../../constants/colors.js';
+import { accentColor, baseColor, detailColor, textBaseColor } from '../../constants/colors.js';
 
 import { FiAlertTriangle } from 'react-icons/fi';
+import { ThreeDots } from 'react-loader-spinner';
 import axios from 'axios';
 import styled from 'styled-components';
 import swal from 'sweetalert';
@@ -22,10 +23,6 @@ export default function SignUpPage() {
 	const [validate, setValidate] = useState(true);
 	const [showPassword, setShowPassword] = useState(false);
 
-	// function testeSweet() {
-	// 	swal('Título', 'Texto', { icon: 'success', buttons: [true, true] });
-	// }
-
 	function signUp(e) {
 		e.preventDefault();
 		setRegistering(true);
@@ -35,7 +32,6 @@ export default function SignUpPage() {
 			return;
 		} else {
 			setValidate(true);
-			setRegistering(false);
 		}
 		const body = { ...user };
 		delete body.confirmPass;
@@ -43,9 +39,11 @@ export default function SignUpPage() {
 			.post(`${process.env.REACT_APP_API_BASE_URL}/sign-up`, body)
 			.then((res) => {
 				swal(`Usuário cadastrado com sucesso`, '', { icon: 'success' });
+				setRegistering(false);
 				navigate('/');
 			})
 			.catch((err) => {
+				setRegistering(false);
 				handleError(err.response);
 			});
 	}
@@ -115,7 +113,7 @@ export default function SignUpPage() {
 			setUser({ ...user, [e.target.id]: e.target.value });
 		}
 	}
-
+	console.log(registering);
 	return (
 		<SignUpContainer>
 			<h1>Cadastro</h1>
@@ -201,7 +199,9 @@ export default function SignUpPage() {
 					onChange={handleForm}
 					required
 				/>
-				<button type='submit'>Cadastrar</button>
+				<button type='submit'>
+					{registering ? <ThreeDots color={accentColor} width='60' /> : 'Cadastrar'}
+				</button>
 			</SignUpForm>
 		</SignUpContainer>
 	);
@@ -212,6 +212,13 @@ const SignUpContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	margin: 0 25px 25px 25px;
+	h1 {
+		font-weight: 400;
+		font-size: 1.3em;
+	}
+	@media (min-width: 660px) {
+		margin: 50px 25px 25px 25px;
+	}
 `;
 
 const SignUpForm = styled.form`
@@ -219,6 +226,7 @@ const SignUpForm = styled.form`
 	flex-direction: column;
 	align-items: center;
 	width: 80vw;
+	max-width: 660px;
 	label,
 	input {
 		width: 100%;
@@ -261,45 +269,45 @@ const SignUpForm = styled.form`
 			font-size: 0.8em;
 		}
 	}
-	display: inline-flex;
-	position: relative;
-	justify-content: center;
-	align-items: center;
-	box-sizing: border-box;
-	height: 48px;
-	padding-right: 16px;
-	padding-left: 16px;
-	border-width: 0;
-	border-radius: 5px;
-	overflow: hidden;
-	list-style: none;
-	color: ${textBaseColor};
-	font-size: 1em;
-	line-height: 1;
-	font-family: 'JetBrains Mono', monospace;
-	text-align: left;
-	text-decoration: none;
-	white-space: nowrap;
-	cursor: pointer;
-	background-color: ${baseColor};
-	box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-		${accentColor} 0 -3px 0 inset;
-	transition: box-shadow 0.15s, transform 0.15s;
-	will-change: box-shadow, transform;
-	appearance: none;
-	touch-action: manipulation;
-	margin-top: 1em;
-	:focus {
-		box-shadow: ${accentColor} 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-			rgba(45, 35, 66, 0.3) 0 7px 13px -3px, ${accentColor} 0 -3px 0 inset;
-	}
-	:hover {
-		box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
-			${accentColor} 0 -3px 0 inset;
-		transform: translateY(-2px);
-	}
-	:active {
-		box-shadow: ${accentColor} 0 3px 7px inset;
-		transform: translateY(2px);
+	button {
+		display: inline-flex;
+		position: relative;
+		justify-content: center;
+		align-items: center;
+		box-sizing: border-box;
+		height: 48px;
+		margin-top: 1em;
+		padding-right: 16px;
+		padding-left: 16px;
+		border-width: 0;
+		border-radius: 5px;
+		overflow: hidden;
+		color: ${textBaseColor};
+		font-size: 1em;
+		line-height: 1;
+		text-align: left;
+		white-space: nowrap;
+		cursor: pointer;
+		background-color: ${baseColor};
+		box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+			${detailColor} 0 -3px 0 inset;
+		transition: box-shadow 0.15s, transform 0.15s;
+		will-change: box-shadow, transform;
+		/* font-family: 'JetBrains Mono', monospace; */
+		appearance: none;
+		touch-action: manipulation;
+		:focus {
+			box-shadow: ${detailColor} 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+				rgba(45, 35, 66, 0.3) 0 7px 13px -3px, ${detailColor} 0 -3px 0 inset;
+		}
+		:hover {
+			box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+				${detailColor} 0 -3px 0 inset;
+			transform: translateY(-2px);
+		}
+		:active {
+			box-shadow: ${detailColor} 0 3px 7px inset;
+			transform: translateY(2px);
+		}
 	}
 `;
