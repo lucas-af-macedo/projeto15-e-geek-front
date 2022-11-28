@@ -117,7 +117,7 @@ export default function SingleProductPage(props) {
 					axios
 						.post(`${process.env.REACT_APP_API_BASE_URL}/cartItem`, body, config)
 						.then(answer=>{
-							swal("Produto adicionado ao carrinho com sucesso!", { icon: 'sucess' });
+							swal("Produto adicionado ao carrinho com sucesso!", { icon: 'success' });
 							setDisabled(false);
 						})
 						.catch((err) => {
