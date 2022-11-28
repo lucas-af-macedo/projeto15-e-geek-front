@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+import CartPage from './pages/CartPage/CartPage.js';
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage.js';
 import GlobalStyle from './assets/styles/GlobalStyle.js';
 import Header from './components/Header.js';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
@@ -32,6 +34,7 @@ function App() {
 					<Route path='/sign-in' element={<SignInPage />} />
 					<Route path='/product/:id' element={<SingleProductPage />} />
 					<Route path='/search' element={<SearchPage />} />
+					<Route path='/checkout' element={<CheckoutPage />} />
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>

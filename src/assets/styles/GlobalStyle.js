@@ -48,7 +48,6 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	font-weight: 400;
-	line-height: 1;
 	font-family: 'Roboto Slab', serif;
 	background-color: ${baseColor};
 }

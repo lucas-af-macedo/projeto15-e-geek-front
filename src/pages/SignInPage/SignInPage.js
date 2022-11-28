@@ -20,17 +20,16 @@ export default function SignInPage() {
 		setDisabled(true);
 		event.preventDefault();
 		const URL = `${baseURL}/sign-in`;
-		let body;
-		if (userData?.token !== undefined && userData?.isLogged) {
-			if (!userData?.isLogged) {
-				body = {
-					...form,
-					oldToken: `Bearer ${userData.token}`,
-				};
-			} else {
-				body = { ...form };
-			}
-		}
+        let body;
+        if (userData?.token !== undefined && !userData?.isLogged){
+            body = { 
+                ...form,
+                oldToken: `Bearer ${userData.token}`
+            };
+        }else{
+            body = {...form}
+        }
+        
 
 		const request = axios.post(URL, body);
 
